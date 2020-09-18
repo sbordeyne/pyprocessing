@@ -1,5 +1,7 @@
 import colorsys
 
+from pyprocessing import pp
+
 
 class Color:
     RGB = 0
@@ -77,6 +79,8 @@ class Color:
         return '#' + ''.join(hex(v)[2:].zfill(2) for v in (self.rgb))
 
 
+# Creating and reading color
+
 def alpha(color):
     return color.alpha
 
@@ -115,3 +119,18 @@ def lerp_color(color_from, color_to, amount):
     color_from = tuple(int((1 - amount) * v) for v in color_from.rgb)
     color_to = tuple(int(amount * v) for v in color_to.rgb)
     return Color(*(color_from + color_to))
+
+
+# Setting colors
+
+def stroke(color=255):
+    global pp
+    color = Color(color)
+    pp.namespace['stroke'] = color
+
+
+def background(color):
+    global pp
+    color = Color(color)
+
+    pp.windows.set_background(color)

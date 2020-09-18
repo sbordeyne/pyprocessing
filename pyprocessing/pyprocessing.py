@@ -1,3 +1,5 @@
+from time import time_ns
+
 from pyprocessing.utils import SingletonMeta
 
 
@@ -30,6 +32,7 @@ class PyProcessing(metaclass=SingletonMeta):
     def __init__(self):
         self.width = 640
         self.height = 480
+        self.start_time_ns = 0
         self.namespace = {}
         self.renderers = []
 
@@ -41,6 +44,7 @@ class PyProcessing(metaclass=SingletonMeta):
     def start(self):
         for renderer in self.renderers:
             renderer.start()
+        self.start_time_ns = time_ns()
 
     @property
     def windows(self):
