@@ -1,0 +1,16 @@
+language: python
+required: sudo
+python:
+  - "3.7"
+  - "3.8"
+before_install:
+  - sudo pip install -r requirements.txt
+  - sleep 3
+install:
+  - python -m pip install nose coverage codecov
+script:
+  - python -m pip install .
+  - python -m nose
+after_success:
+  - coverage run nosetests
+  - codecov
