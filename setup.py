@@ -23,8 +23,8 @@ License
 """
 
 setup(
-    name="pyprocessing",
-    py_modules=["pyprocessing"],
+    name="pyprocessing2",
+    py_modules=["pyprocessing2"],
     version=__version__,
     description=" A pure Python version of the Processing language ",
     long_description=long_description,
@@ -44,6 +44,7 @@ setup(
         'Topic :: Software Development :: Libraries',
     ],
     install_requires=__requirements__,
+    long_description_content_type="text/markdown",
     packages=find_packages(),
     python_requires='>=3.7'
 )

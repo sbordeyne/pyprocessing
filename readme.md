@@ -6,15 +6,15 @@ Write and execute Processing code in pure python
 
 Using pip :
 
-`pip install pyprocessing`
+`pip install pyprocessing2`
 
 From source :
 
-`python{3,} setup.py install`
+`python3 setup.py install`
 
 ## Executing a sketch
 
-`python{3,} -m pyprocessing path/to/sketch.py`
+`python3 -m pyprocessing run path/to/sketch.py`
 
 
 ## What is Processing?
