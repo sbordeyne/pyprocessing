@@ -45,5 +45,10 @@ setup(
     ],
     install_requires=__requirements__,
     packages=find_packages(),
+    entry_points={
+        'console_scripts': [
+            'pyprocessing = pyprocessing.__main__'
+        ]
+    },
     python_requires='>=3.7'
 )

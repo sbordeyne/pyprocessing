@@ -14,4 +14,4 @@ From source :
 
 ## Executing a sketch
 
-`python{3,} -m pyprocessing path/to/sketch.py`
+`pyprocessing path/to/sketch.py`
