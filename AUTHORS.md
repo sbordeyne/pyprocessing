@@ -9,3 +9,5 @@
 * [Cody Fuller](https://github.com/cdfuller)
 
 * [Min Shin Khant](https://github.com/minshinkhant)
+
+* [Mateus Oliveira](https://github.com/mateusap1)
