@@ -22,7 +22,7 @@ class Color:
             self.alpha = 255
             self.red, self.green, self.blue = self._values_to_rgb(*args)
         elif len(args) == 4:
-            v1, v2, v3, self.alpha = *args
+            v1, v2, v3, self.alpha = args
             self.red, self.green, self.blue = self._values_to_rgb(v1, v2, v3)
 
     def _values_to_rgb(self, v1, v2, v3):
