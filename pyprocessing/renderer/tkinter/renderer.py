@@ -12,16 +12,16 @@ class TkRenderer:
         self.root = tk.Tk()
         w = self.pyprocessing.width
         h = self.pyprocessing.height
-        self.root.geometry(f"{w + 2}x{h + 20}+20+20")
-        self.root.title()
-        self.window = Window(
-            self.root, self.pyprocessing.namespace,
-            self.pyprocessing.draw
+        geometry = f"{w + 2}x{h + 20}+20+20"
+        self.pyprocessing.logger.info(
+            'Initializing window with geometry %s', geometry
         )
+        self.root.geometry(geometry)
+        self.root.title()
+        self.root.resizable(False, False)
+        self.window = Window(self.root, self.pyprocessing)
         self.window.pack(expand=True, fill=tk.BOTH)
 
     def start(self):
         self.window.redraw()
-        print(self.window.winfo_width(), self.window.winfo_height())
-        print(self.window.canvas.winfo_width(), self.window.canvas.winfo_height())
         self.root.mainloop()

@@ -1,6 +1,6 @@
 from pyprocessing import pp
 
 
-def line(x, y, width, height):
+def line(x1, y1, x2, y2):
     global pp
-    pp.windows.set_line(x, y, width, height)
+    pp.windows.set_line(x1, y1, x2, y2)
