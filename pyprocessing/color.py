@@ -112,9 +112,9 @@ def saturation(color):
 def lerp_color(color_from, color_to, amount):
     if not (0 <= amount <= 1):
         raise ValueError('`amount` must be between 0 and 1.')
-    if int(amount) == 0:
+    if float(amount) == 0:
         return color_from
-    if int(amount) == 1:
+    if float(amount) == 1:
         return color_to
     color_from = tuple(int((1 - amount) * v) for v in color_from.rgb)
     color_to = tuple(int(amount * v) for v in color_to.rgb)

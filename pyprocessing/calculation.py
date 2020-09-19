@@ -15,9 +15,9 @@ def constrain(amount, low, high):
 def lerp(start, stop, amount):
     if not (0 <= amount <= 1):
         raise ValueError('`amount` must be between 0 and 1.')
-    if int(amount) == 0:
+    if float(amount) == 0:
         return start
-    if int(amount) == 1:
+    if float(amount) == 1:
         return stop
     return ((1 - amount) * start) + (amount * stop)
 

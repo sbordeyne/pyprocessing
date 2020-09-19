@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 import argparse
 import sys
@@ -15,18 +15,22 @@ def run(path, renderers):
     runner.run()
 
 
-parser = argparse.ArgumentParser()
-subparsers = parser.add_subparsers()
+def setup_parser():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
 
-run_parser = subparsers.add_parser('run')
-run_parser.add_argument('path', type=str)
-run_parser.add_argument(
-    '--tkinter', '-tk', dest='renderers',
-    action='append_const', const='TkRenderer'
-)
-run_parser.set_defaults(callback=run)
+    run_parser = subparsers.add_parser('run')
+    run_parser.add_argument('path', type=str)
+    run_parser.add_argument(
+        '--tkinter', '-tk', dest='renderers',
+        action='append_const', const='TkRenderer'
+    )
+    run_parser.set_defaults(callback=run)
 
-parser.add_argument('--version', '-V', action='version', version=get_version())
-args = vars(parser.parse_args())
+    parser.add_argument('--version', '-V', action='version', version=get_version())
+    return vars(parser.parse_args())
+
+
+args = setup_parser()
 callback = args.pop('callback')
 sys.exit(callback(**args))
