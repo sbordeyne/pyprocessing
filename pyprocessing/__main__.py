@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
+import pathlib
 import sys
 
-from pyprocessing import __version__, __author__, Runner
+from pyprocessing import __version__, __author__, Runner, Converter
 
 
 def get_version():
@@ -11,10 +12,22 @@ def get_version():
 
 
 def run(path, renderers, verbosity):
+    # This converts the verbosity flag into appropriate
+    # log level values. I.e. -vv = logging.WARNING, -vvvv = logging.DEBUG
+    verbosity = max((5 - verbosity), 0) * 10
+
     runner = Runner.from_sketch_path(
         path, renderers=renderers, logging_level=verbosity
     )
     runner.run()
+
+
+def convert(path):
+    path = pathlib.Path(path)
+    converter = Converter.from_path(path)
+    fname = path.stem + '_converted.py'
+    with open(path.parent.joinpath(fname), 'w') as f:
+        f.write(str(converter))
 
 
 def setup_parser():
@@ -37,15 +50,19 @@ def setup_parser():
     )
     run_parser.set_defaults(callback=run)
 
+    convert_parser = subparsers.add_parser('convert')
+    convert_parser.add_argument(
+        'path', type=str,
+        help='Path to the processing sketch to convert to PyProcessing syntax.'
+    )
+    convert_parser.set_defaults(callback=convert)
+
     parser.add_argument(
         '--version', '-V', action='version',
         version=get_version()
     )
     args = vars(parser.parse_args())
 
-    # This converts the verbosity flag into appropriate
-    # log level values. I.e. -vv = logging.WARNING, -vvvv = logging.DEBUG
-    args['verbosity'] = max((5 - args['verbosity']), 0) * 10
     return args
 
 

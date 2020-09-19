@@ -126,3 +126,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# Processing converted files
+
+*_converted.py
