@@ -11,7 +11,7 @@ def get_version():
 
 
 def run(path, renderers):
-    runner = Runner.from_sketch_path(args.path, args.renderers)
+    runner = Runner.from_sketch_path(path, renderers)
     runner.run()
 
 
