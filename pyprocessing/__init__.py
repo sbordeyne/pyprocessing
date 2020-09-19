@@ -18,7 +18,7 @@ from pyprocessing.primitives_2d import (
     line,
 )
 from pyprocessing.color import (
-    Color, color, alpha, red, green, blue,
+    Color, alpha, red, green, blue,
     brightness, hue, saturation, lerp_color,
     stroke, background,
 )
