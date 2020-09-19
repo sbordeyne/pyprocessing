@@ -11,3 +11,5 @@
 * [Min Shin Khant](https://github.com/minshinkhant)
 
 * [James McClure](https://github.com/PeanutbutterWarrior)
+
+* [jeacom25b](https://github.com/jeacom25b)

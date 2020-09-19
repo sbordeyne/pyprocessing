@@ -69,7 +69,7 @@ class PyProcessing(metaclass=SingletonMeta):
                 ).expanduser()
         if system == 'Linux':
             path = pathlib.Path(
-                    f'/var/logs/pyprocessing/{filename}.log'
+                    f'~/pyprocessing/{filename}.log'
                 ).expanduser()
 
         if path:
