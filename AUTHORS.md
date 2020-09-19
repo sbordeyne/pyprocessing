@@ -10,4 +10,6 @@
 
 * [Min Shin Khant](https://github.com/minshinkhant)
 
+* [James McClure](https://github.com/PeanutbutterWarrior)
+
 * [Mateus Oliveira](https://github.com/mateusap1)
