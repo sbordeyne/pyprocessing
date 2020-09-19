@@ -5,10 +5,8 @@ def size(w, h):
     global pp
     global width
     global height
-    pp.namespace['width'] = w
-    pp.namespace['height'] = h
-    width = w
-    height = h
+    pp.width = w
+    pp.height = h
 
 
 def frame_rate(fr=60):
