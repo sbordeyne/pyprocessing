@@ -18,8 +18,10 @@ from pyprocessing.environment import (
     size, frame_rate, delay,
 )
 from pyprocessing.primitives_2d import (
-    line, circle, ellipse, square, rect,
-    triangle, quad
+    ellipse, rect, triangle, quad
+)
+from pyprocessing.shapes_2d import(
+    square, circle, line
 )
 from pyprocessing.color import (
     Color, alpha, red, green, blue,
