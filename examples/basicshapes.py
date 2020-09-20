@@ -1,7 +1,8 @@
 from pyprocessing import (
     size, stroke, frame_rate,
     background, line, circle, ellipse,
-    square, rect, triangle, quad
+    square, rect, triangle, quad, arc,
+    PI, QUARTER_PI
 )
 
 def setup():
@@ -18,3 +19,4 @@ def draw():
     rect(500, 100, 50, 25)
     triangle(50, 200, 300, 250, 100, 300)
     quad(400, 200, 500, 250, 350, 300, 375, 100)
+    arc(200, 400, 80, 80, 0, PI+QUARTER_PI, 'PIE')
