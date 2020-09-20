@@ -1,13 +1,12 @@
 from collections import deque
+from math import degrees
 import tkinter as tk
-from math import tau, degrees
 
 from pyprocessing.renderer.actions import Action
 
 
 class Window(tk.Frame):
     def __init__(self, master, pyprocessing):
-
         super().__init__(master)
         namespace = pyprocessing.namespace
         self.pyprocessing = pyprocessing
@@ -52,7 +51,6 @@ class Window(tk.Frame):
 
     def redraw(self):
         self.canvas.update()
-
         self.pyprocessing.draw()
         self.draw_once()
         self.after(int(1_000 / self.frame_rate), self.redraw)
@@ -69,10 +67,10 @@ class Window(tk.Frame):
         self.queued_actions.append(action)
     
     def set_ellipse(self, x, y, width, height):
-        x1 = x - (width +1)//2
-        y1 = y - (height+1)//2
-        x2 = x + width//2  + 1
-        y2 = y + height//2 + 1
+        x1 = x - (width + 1) // 2
+        y1 = y - (height + 1) // 2
+        x2 = x + width // 2 + 1
+        y2 = y + height // 2 + 1
         action = Action(
             self.canvas, 'create_oval',
             x1, y1, x2, y2, fill=self.fill.hex, outline=self.stroke.hex,
@@ -100,10 +98,10 @@ class Window(tk.Frame):
         self.queued_actions.append(action)
     
     def set_arc(self, x, y, width, height, start, stop, mode):
-        x1 = x - (width +1)//2
-        y1 = y - (height+1)//2
-        x2 = x + width//2 + 1
-        y2 = y + height//2 + 1
+        x1 = x - (width + 1) // 2
+        y1 = y - (height + 1) // 2
+        x2 = x + width // 2 + 1
+        y2 = y + height // 2 + 1
         start = degrees(start)
         stop = degrees(stop)
         angle = start - stop
