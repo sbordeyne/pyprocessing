@@ -72,7 +72,7 @@ class Window(tk.Frame):
         y2 = y + height//2 + 1
         action = Action(
             self.canvas, 'create_oval',
-            x1, y1, x2, y2, fill=self.stroke.hex,
+            x1, y1, x2, y2, fill=self.stroke.hex, outline=self.stroke.hex
         )
         self.queued_actions.append(action)
     
@@ -81,7 +81,7 @@ class Window(tk.Frame):
         y2 = y1 + height + 1
         action = Action(
             self.canvas, 'create_rectangle',
-            x1, y1, x2, y2, fill=self.stroke.hex
+            x1, y1, x2, y2, fill=self.stroke.hex, outline=self.stroke.hex
         )
         self.queued_actions.append(action)
     
@@ -109,7 +109,7 @@ class Window(tk.Frame):
             mode += 'slice'
         action = Action(self.canvas, 'create_arc',
             x1, y1, x2, y2,
-            start=start, extent=angle, style=mode, fill=self.stroke.hex
+            start=start, extent=angle, style=mode, fill=self.stroke.hex, outline=self.stroke.hex
         )
         self.queued_actions.append(action)
 
