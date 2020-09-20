@@ -88,6 +88,7 @@ class Window(tk.Frame):
     
     def set_rounded_rectangle(self, x, y, width, height, c1, c2, c3, c4):
         # For when rect has 5 or 8 arguments
+        # TODO Handle 5 or 8 arguments passed to rect by making a rectangle with rounded corners
         pass
     
     def set_polygon(self, points):
