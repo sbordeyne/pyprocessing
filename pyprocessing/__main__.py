@@ -11,6 +11,7 @@ def get_version():
     return f'PyProcessing v{__version__} by {", ".join(__author__)}'
 
 
+<<<<<<< HEAD
 def run(path, renderers, verbosity):
     # This converts the verbosity flag into appropriate
     # log level values. I.e. -vv = logging.WARNING, -vvvv = logging.DEBUG
@@ -19,6 +20,10 @@ def run(path, renderers, verbosity):
     runner = Runner.from_sketch_path(
         path, renderers=renderers, logging_level=verbosity
     )
+=======
+def run(path, renderers):
+    runner = Runner.from_sketch_path(args.path, args.renderers)
+>>>>>>> parent of a6acebd... Merge pull request #2 from Dogeek/master
     runner.run()
 
 
@@ -35,21 +40,14 @@ def setup_parser():
     subparsers = parser.add_subparsers()
 
     run_parser = subparsers.add_parser('run')
-    run_parser.add_argument('path', type=str, help='Path to the sketch to run.')
+    run_parser.add_argument('path', type=str)
     run_parser.add_argument(
         '--tkinter', '-tk', dest='renderers',
-        action='append_const', const='TkRenderer',
-        help='Renders the result in a Tcl/Tk window.'
-    )
-    run_parser.add_argument(
-        '--verbosity', '-v', action='count', default=1,
-        help=(
-            'Verbosity level. Will set the logging level internally.'
-            'Specify this flag multiple times for increased verbosity.'
-        )
+        action='append_const', const='TkRenderer'
     )
     run_parser.set_defaults(callback=run)
 
+<<<<<<< HEAD
     convert_parser = subparsers.add_parser('convert')
     convert_parser.add_argument(
         'path', type=str,
@@ -64,6 +62,10 @@ def setup_parser():
     args = vars(parser.parse_args())
 
     return args
+=======
+    parser.add_argument('--version', '-V', action='version', version=get_version())
+    return vars(parser.parse_args())
+>>>>>>> parent of a6acebd... Merge pull request #2 from Dogeek/master
 
 
 args = setup_parser()

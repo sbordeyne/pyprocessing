@@ -7,9 +7,3 @@ class Action:
 
     def __call__(self):
         return getattr(self.object, self.method)(*self.args, **self.kwargs)
-
-    def __str__(self):
-        return (
-            f'A({self.object.__class__.__name__}, {self.method})'
-            f'({self.args}, {self.kwargs}'
-        )
