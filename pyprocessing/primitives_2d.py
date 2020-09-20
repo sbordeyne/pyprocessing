@@ -24,6 +24,7 @@ def rect(x, y, width, height, *args):
         raise ValueError(f'rect() takes 4, 5 or 8 parameters. ({len(args) + 4} given)')
 
 
+
 def triangle(x1, y1, x2, y2, x3, y3):
     global pp
     corners = [x1, y1, x2, y2, x3, y3]
