@@ -5,11 +5,13 @@ from pyprocessing import (
     PI, QUARTER_PI
 )
 
+
 def setup():
     size(640, 360)
     stroke(255)
     frame_rate(60)
     background(0)
+
 
 def draw():
     line(50, 100, 150, 100)

@@ -99,7 +99,7 @@ class Window(tk.Frame):
     def set_arc(self, x, y, width, height, start, stop, mode):
         x1 = x - (width +1)//2
         y1 = y - (height+1)//2
-        x2 = x + width//2  + 1
+        x2 = x + width//2 + 1
         y2 = y + height//2 + 1
         start = degrees(start)
         stop = degrees(stop)
@@ -112,4 +112,3 @@ class Window(tk.Frame):
             start=start, extent=angle, style=mode, fill=self.stroke.hex
         )
         self.queued_actions.append(action)
-  
