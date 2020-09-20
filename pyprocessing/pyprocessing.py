@@ -1,10 +1,16 @@
+import datetime
+import logging
+import pathlib
+import platform
+import sys
 from time import time_ns
 
 from pyprocessing.utils import SingletonMeta
 
 
 class RenderersDelegate:
-    def __init__(self, renderers, render_attr):
+    def __init__(self, pp, renderers, render_attr):
+        self.pp = pp
         self.renderers = renderers
         self.render_attr = render_attr
         methods = (
@@ -23,7 +29,9 @@ class RenderersDelegate:
                 )
 
     def __delegate(self, mname, *args, **kwargs):
-        print(mname, args, kwargs)
+        self.pp.logger.debug(
+            'Delegating to %s (*%s, **%s)', mname, args, kwargs
+        )
         for r in self.renderers:
             getattr(getattr(r, self.render_attr), mname)(*args, **kwargs)
 
@@ -36,7 +44,6 @@ class PyProcessing(metaclass=SingletonMeta):
         self.namespace = {}
         self.renderers = []
 
-<<<<<<< HEAD
         formatter = logging.Formatter('%(asctime)s - %(levelinfo)s : %(message)s')
         fhandler = logging.FileHandler(self._get_logs_path())
         fhandler.setFormatter(formatter)
@@ -69,8 +76,6 @@ class PyProcessing(metaclass=SingletonMeta):
             path.parent.mkdir(parents=True, exist_ok=True)
             return str(path)
 
-=======
->>>>>>> parent of a6acebd... Merge pull request #2 from Dogeek/master
     def attach_renderer(self, renderer_class):
         renderer = renderer_class(self)
         renderer.init()
@@ -83,4 +88,4 @@ class PyProcessing(metaclass=SingletonMeta):
 
     @property
     def windows(self):
-        return RenderersDelegate(self.renderers, 'window')
+        return RenderersDelegate(self, self.renderers, 'window')

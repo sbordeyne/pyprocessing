@@ -5,7 +5,7 @@ from pyprocessing.runner import Runner
 from pyprocessing.converter import Converter
 
 
-__version__ = '0.0.1b3'
+__version__ = '0.0.1b4'
 __author__ = ('Dogeek', )
 
 width = 640
