@@ -63,3 +63,35 @@ class Window(tk.Frame):
             x1, y1, x2, y2, fill=self.stroke.hex,
         )
         self.queued_actions.append(action)
+    
+    def set_ellipse(self, x, y, width, height):
+        x1 = x - (width +1)//2
+        y1 = y - (height+1)//2
+        x2 = x + width//2  + 1
+        y2 = y + height//2 + 1
+        action = Action(
+            self.canvas, 'create_oval',
+            x1, y1, x2, y2, fill=self.stroke.hex,
+        )
+        self.queued_actions.append(action)
+    
+    def set_rectangle(self, x1, y1, width, height):
+        x2 = x1 + width  + 1
+        y2 = y1 + height + 1
+        action = Action(
+            self.canvas, 'create_rectangle',
+            x1, y1, x2, y2, fill=self.stroke.hex
+        )
+        self.queued_actions.append(action)
+    
+    def set_rounded_rectangle(self, x, y, width, height, c1, c2, c3, c4):
+        # For when rect has 5 or 8 arguments
+        pass
+    
+    def set_polygon(self, points):
+        action = Action(
+            self.canvas, 'create_polygon',
+            points, fill=self.stroke.hex
+        )
+        self.queued_actions.append(action)
+    
