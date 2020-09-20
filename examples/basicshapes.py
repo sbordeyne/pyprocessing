@@ -13,6 +13,7 @@ def setup():
     frame_rate(60)
     background(127)
 
+
 def draw():
     line(50, 100, 150, 100)
     circle(200, 100, 50)
