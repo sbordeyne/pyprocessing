@@ -1,5 +1,6 @@
 from collections import deque
 import tkinter as tk
+from math import tau, degrees
 
 from pyprocessing.renderer.actions import Action
 
@@ -95,3 +96,20 @@ class Window(tk.Frame):
         )
         self.queued_actions.append(action)
     
+    def set_arc(self, x, y, width, height, start, stop, mode):
+        x1 = x - (width +1)//2
+        y1 = y - (height+1)//2
+        x2 = x + width//2  + 1
+        y2 = y + height//2 + 1
+        start = degrees(start)
+        stop = degrees(stop)
+        angle = start - stop
+        mode = mode.lower()
+        if mode == 'pie':
+            mode += 'slice'
+        action = Action(self.canvas, 'create_arc',
+            x1, y1, x2, y2,
+            start=start, extent=angle, style=mode, fill=self.stroke.hex
+        )
+        self.queued_actions.append(action)
+  

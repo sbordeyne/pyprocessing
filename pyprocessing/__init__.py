@@ -18,7 +18,7 @@ from pyprocessing.environment import (
     size, frame_rate, delay,
 )
 from pyprocessing.primitives_2d import (
-    ellipse, rect, triangle, quad
+    ellipse, rect, triangle, quad, arc
 )
 from pyprocessing.shapes_2d import(
     square, circle, line
