@@ -121,9 +121,3 @@ class Window(tk.Frame):
             x, y, x + 1, y + 1, fill=self.stroke.hex
         )
         self.queued_actions.append(action)
-
-    def set_point(self, x, y):
-        action = Action(self.canvas, 'create_line',
-            x, y, x+1, y+1, fill=self.stroke.hex
-        )
-        self.queued_actions.append(action)
