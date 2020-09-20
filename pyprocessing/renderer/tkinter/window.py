@@ -1,6 +1,7 @@
 from collections import deque
 from math import degrees
 import tkinter as tk
+from math import tau, degrees
 
 from pyprocessing.renderer.actions import Action
 
