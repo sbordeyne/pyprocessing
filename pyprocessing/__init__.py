@@ -25,7 +25,7 @@ from pyprocessing.primitives_2d import (
 from pyprocessing.color import (
     Color, alpha, red, green, blue,
     brightness, hue, saturation, lerp_color,
-    stroke, background,
+    stroke, background, fill,
 )
 from pyprocessing.time import (
     second, minute, hour, day, month,

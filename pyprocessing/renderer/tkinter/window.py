@@ -7,6 +7,7 @@ from pyprocessing.renderer.actions import Action
 
 class Window(tk.Frame):
     def __init__(self, master, pyprocessing):
+
         super().__init__(master)
         namespace = pyprocessing.namespace
         self.pyprocessing = pyprocessing
@@ -14,7 +15,8 @@ class Window(tk.Frame):
         width = namespace.get('width', 640)
         height = namespace.get('height', 480)
         self.frame_rate = namespace.get('framerate', 60)
-        self.stroke = namespace.get('stroke', '#ffffff')
+        self.stroke = namespace.get('stroke', '#000000')
+        self.fill = namespace.get('fill', '#ffffff')
 
         self.canvas = tk.Canvas(self, width=width, height=height)
         self.canvas.pack(fill=tk.BOTH, expand=True)
@@ -27,7 +29,8 @@ class Window(tk.Frame):
         width = namespace.get('width', 640)
         height = namespace.get('height', 480)
         self.frame_rate = namespace.get('framerate', 60)
-        self.stroke = namespace.get('stroke', '#ffffff')
+        self.stroke = namespace.get('stroke', '#000000')
+        self.fill = namespace.get('fill', '#ffffff')
 
         self.config(width=width, height=height)
         self.canvas.config(width=width, height=height)
@@ -72,16 +75,16 @@ class Window(tk.Frame):
         y2 = y + height//2 + 1
         action = Action(
             self.canvas, 'create_oval',
-            x1, y1, x2, y2, fill=self.stroke.hex, outline=self.stroke.hex
+            x1, y1, x2, y2, fill=self.fill.hex, outline=self.stroke.hex,
         )
         self.queued_actions.append(action)
     
     def set_rectangle(self, x1, y1, width, height):
-        x2 = x1 + width  + 1
+        x2 = x1 + width + 1
         y2 = y1 + height + 1
         action = Action(
             self.canvas, 'create_rectangle',
-            x1, y1, x2, y2, fill=self.stroke.hex, outline=self.stroke.hex
+            x1, y1, x2, y2, fill=self.fill.hex, outline=self.stroke.hex
         )
         self.queued_actions.append(action)
     
@@ -92,7 +95,7 @@ class Window(tk.Frame):
     def set_polygon(self, points):
         action = Action(
             self.canvas, 'create_polygon',
-            points, fill=self.stroke.hex
+            points, fill=self.fill.hex, outline = self.stroke.hex
         )
         self.queued_actions.append(action)
     
@@ -109,7 +112,7 @@ class Window(tk.Frame):
             mode += 'slice'
         action = Action(self.canvas, 'create_arc',
             x1, y1, x2, y2,
-            start=start, extent=angle, style=mode, fill=self.stroke.hex, outline=self.stroke.hex
+            start=start, extent=angle, style=mode, fill=self.fill.hex, outline=self.stroke.hex
         )
         self.queued_actions.append(action)
 

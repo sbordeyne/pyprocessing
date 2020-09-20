@@ -123,10 +123,16 @@ def lerp_color(color_from, color_to, amount):
 
 # Setting colors
 
-def stroke(color=255):
+def stroke(color=0):
     global pp
     color = Color(color)
     pp.namespace['stroke'] = color
+
+
+def fill(color=255):
+    global pp
+    color = Color(color)
+    pp.namespace['fill'] = color
 
 
 def background(color):

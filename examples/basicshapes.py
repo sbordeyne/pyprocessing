@@ -1,5 +1,5 @@
 from pyprocessing import (
-    size, stroke, frame_rate,
+    size, stroke, frame_rate, fill,
     background, line, circle, ellipse,
     square, rect, triangle, quad, arc,
     PI, QUARTER_PI
@@ -8,9 +8,10 @@ from pyprocessing import (
 
 def setup():
     size(640, 360)
-    stroke(255)
+    stroke(0)
+    fill(255)
     frame_rate(60)
-    background(0)
+    background(127)
 
 
 def draw():
