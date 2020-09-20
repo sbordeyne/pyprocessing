@@ -34,7 +34,14 @@ def rect(x, y, width, height, *args):
     else:
         raise TypeError
 
+
 def triangle(x1, y1, x2, y2, x3, y3):
     global pp
     corners = [x1, y1, x2, y2, x3, y3]
+    pp.windows.set_polygon(corners)
+
+
+def quad(x1, y1, x2, y2, x3, y3, x4, y4):
+    global pp
+    corners = [x1, y1, x2, y2, x3, y3, x4, y4]
     pp.windows.set_polygon(corners)
