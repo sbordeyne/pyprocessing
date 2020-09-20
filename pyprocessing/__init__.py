@@ -19,7 +19,7 @@ from pyprocessing.environment import (
 )
 from pyprocessing.primitives_2d import (
     ellipse, rect, triangle, quad, arc,
-    square, circle, line
+    square, circle, line, point
 )
 
 from pyprocessing.color import (

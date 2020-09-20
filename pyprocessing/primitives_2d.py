@@ -50,3 +50,8 @@ def square(x, y, extent):
 def line(x1, y1, x2, y2):
     global pp
     pp.windows.set_line(x1, y1, x2, y2)
+
+
+def point(x, y):
+    global pp
+    pp.windows.set_point(x, y)
