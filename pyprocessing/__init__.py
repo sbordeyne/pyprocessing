@@ -18,12 +18,14 @@ from pyprocessing.environment import (
     size, frame_rate, delay,
 )
 from pyprocessing.primitives_2d import (
-    line,
+    ellipse, rect, triangle, quad, arc,
+    square, circle, line, point
 )
+
 from pyprocessing.color import (
     Color, alpha, red, green, blue,
     brightness, hue, saturation, lerp_color,
-    stroke, background,
+    stroke, background, fill,
 )
 from pyprocessing.time import (
     second, minute, hour, day, month,
