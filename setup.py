@@ -39,12 +39,11 @@ setup(
         'Operating System :: POSIX',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Topic :: Software Development :: Libraries',
     ],
     install_requires=__requirements__,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    python_requires='>=3.7'
+    python_requires='>=3.8'
 )
