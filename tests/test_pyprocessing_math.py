@@ -94,3 +94,32 @@ class PyProcessingMathTest(TestCase):
         self.assertEqual(PVector(1, 0, 0), PVector.x_unit)
         self.assertEqual(PVector(0, 1, 0), PVector.y_unit)
         self.assertEqual(PVector(0, 0, 1), PVector.z_unit)
+
+    def test_pvector_swizzle(self):
+        '''
+        Test that swizzle operations to scramble vector elements behave as expected
+        '''
+        vec = PVector(1, 2, 3, 4)
+
+        self.assertEqual(PVector(1, 1, 1), vec.xxx)
+        self.assertEqual(PVector(2, 2, 2), vec.yyy)
+        self.assertEqual(PVector(3, 2, 1), vec.zyx)
+        self.assertEqual(PVector(3, 2, 1, 4), vec.zyxw)
+        self.assertEqual(1, vec.x)
+        self.assertEqual(2, vec.y)
+        self.assertEqual(3, vec.z)
+        self.assertEqual(4, vec.w)
+        vec.xyz = 2, 4, 6
+        self.assertEqual(PVector(2, 4, 6, 4), vec)
+        vec.zxw = 1, 2, 4
+        self.assertEqual(PVector(2, 4, 1, 4), vec)
+
+    def test_pvector_normalization(self):
+        '''
+        Test that normalization operations work properly
+        '''
+        vec = PVector(1, 2, 3)
+        self.assertEqual(vec.dot(vec), vec.mag_sq())
+        self.assertAlmostEqual(vec.normalized().mag(), 1)
+        vec.normalize()
+        self.assertAlmostEqual(vec.mag_sq(), 1)
