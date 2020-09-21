@@ -4,9 +4,10 @@ from pyprocessing import PyProcessing
 
 
 class Color:
-    RGB = 0
-    HSV = 1
+    RGB = 1
     HLS = 2
+    HSB = 3
+    colormode = RGB
 
     def __init__(self, *args, colorspace=0):
         self.colorspace = colorspace
@@ -37,7 +38,7 @@ class Color:
 
         if self.colorspace == Color.RGB:
             return _(f(v1)), _(f(v2)), _(f(v3))
-        elif self.colorspace == Color.HSV:
+        elif self.colorspace == Color.HSB:
             return tuple(_(v) for v in colorsys.hsv_to_rgb(f(v1), f(v2), f(v3)))
         elif self.colorspace == Color.HLS:
             return tuple(_(v) for v in colorsys.hls_to_rgb(f(v1), f(v2), f(v3)))
