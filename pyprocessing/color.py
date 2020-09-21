@@ -170,8 +170,10 @@ def color_mode(mode, *args):
     if mode != 1 and mode != 3:
         raise ValueError('Invalid color mode. Valid modes are 1 (RGB) and 3 (HSB)')
 
+    Color.colorspace = mode
+    
     if len(args) == 0:
-        Color.colorspace = mode
+        pass
     elif len(args) == 1:
         Color.maxv1 = Color.maxv2 = Color.maxv3 = Color.maxva = args[0]
     elif len(args) == 3:
