@@ -7,19 +7,8 @@ class Color:
     RGB = 1
     HLS = 2
     HSB = 3
-    colormode = RGB
-
-    @staticmethod
-    def from_hex(color):
-        # strip the leading '#' sign
-        color = color[1:]
-
-        # select the hex r, g, b component, cast into an int
-        # It's hex, so specify the base for the int function
-        red = int(color[0:2], base=16)
-        green = int(color[2:4], base=16)
-        blue = int(color[4:6], base=16)
-        return Color(red, green, blue, colorspace=Color.RGB)
+    
+    colorspace = RGB
 
     def __init__(self, *args, colorspace=0):
         self.colorspace = colorspace
@@ -37,6 +26,18 @@ class Color:
         elif len(args) == 4:
             v1, v2, v3, self.alpha = args
             self.red, self.green, self.blue = self._values_to_rgb(v1, v2, v3)
+    
+    @staticmethod
+    def from_hex(color):
+        # strip the leading '#' sign
+        color = color[1:]
+
+        # select the hex r, g, b component, cast into an int
+        # It's hex, so specify the base for the int function
+        red = int(color[0:2], base=16)
+        green = int(color[2:4], base=16)
+        blue = int(color[4:6], base=16)
+        return Color(red, green, blue, colorspace=Color.RGB)
 
     def _values_to_rgb(self, v1, v2, v3):
         def f(v):
@@ -162,3 +163,10 @@ def background(color):
     pp = PyProcessing()
     color = Color(color)
     pp.windows.set_background(color)
+
+
+def color_mode(mode, *args):
+    if mode != 1 and mode != 3:
+        raise ValueError('Invalid color mode. Valid modes are 1 (RGB) and 3 (HSB)')
+    if len(args) == 0:
+        Color.colorspace = mode
