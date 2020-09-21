@@ -152,9 +152,9 @@ def lerp_color(color_from, color_to, amount):
 
 # Setting colors
 
-def stroke(color=0):
+def stroke(*colors):
     pp = PyProcessing()
-    color = Color(color)
+    color = Color(*colors)
     pp.namespace['stroke'] = color
 
 
@@ -163,9 +163,9 @@ def no_stroke():
     pp.namespace['stroke'] = None
 
 
-def fill(color=255):
+def fill(*colors):
     pp = PyProcessing()
-    color = Color(color)
+    color = Color(*colors)
     pp.namespace['fill'] = color
 
 
