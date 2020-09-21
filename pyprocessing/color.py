@@ -16,7 +16,7 @@ class Color:
         self.colorspace = colorspace
         def adjust(val, max):
             if val > max:
-                return max
+                return 255
             return round((val / max) * 255)
 
         def adjusttuple(tup, maxes):
