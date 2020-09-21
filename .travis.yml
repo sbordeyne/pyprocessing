@@ -4,11 +4,11 @@ python:
   - "3.7"
   - "3.8"
 before_install:
-  - pip3 install -r requirements.txt --user
+  - pip3 install -r requirements.txt
 install:
-  - python3 -m pip install --user nose coverage codecov flake8 pylint
+  - python3 -m pip install nose coverage codecov flake8 pylint
 script:
-  - python3 -m pip install --user .
+  - python3 -m pip install .
   - python3 -m nose
   - flake8 --config .flake8
 after_success:
