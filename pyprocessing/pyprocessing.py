@@ -6,7 +6,7 @@ import sys
 from time import time_ns
 
 from pyprocessing.utils import SingletonMeta
-from pyprocessing import frame_count
+from pyprocessing import frame_count  # noqa
 
 
 class RenderersDelegate:

@@ -3,11 +3,11 @@ import tkinter
 import ctypes
 import platform
 
-from pyprocessing import pp, width, height
+from pyprocessing import PyProcessing, width, height  # noqa
 
 
 def size(w, h):
-    global pp
+    pp = PyProcessing()
     global width
     global height
     pp.namespace['width'] = w
@@ -19,7 +19,7 @@ def size(w, h):
 
 
 def frame_rate(fr=60):
-    global pp
+    pp = PyProcessing()
     pp.namespace['framerate'] = fr
 
 

@@ -1,7 +1,6 @@
 from collections import deque
 from math import degrees
 import tkinter as tk
-from math import tau, degrees
 
 from pyprocessing.renderer.actions import Action
 
@@ -67,7 +66,7 @@ class Window(tk.Frame):
             x1, y1, x2, y2, fill=self.stroke.hex,
         )
         self.queued_actions.append(action)
-    
+
     def set_ellipse(self, x, y, width, height):
         x1 = x - (width + 1) // 2
         y1 = y - (height + 1) // 2
@@ -78,7 +77,7 @@ class Window(tk.Frame):
             x1, y1, x2, y2, fill=self.fill.hex, outline=self.stroke.hex,
         )
         self.queued_actions.append(action)
-    
+
     def set_rectangle(self, x1, y1, width, height):
         x2 = x1 + width + 1
         y2 = y1 + height + 1
@@ -87,19 +86,19 @@ class Window(tk.Frame):
             x1, y1, x2, y2, fill=self.fill.hex, outline=self.stroke.hex
         )
         self.queued_actions.append(action)
-    
+
     def set_rounded_rectangle(self, x, y, width, height, c1, c2, c3, c4):
         # For when rect has 5 or 8 arguments
         # TODO Handle 5 or 8 arguments passed to rect by making a rectangle with rounded corners
         pass
-    
+
     def set_polygon(self, points):
         action = Action(
             self.canvas, 'create_polygon',
-            points, fill=self.fill.hex, outline = self.stroke.hex
+            points, fill=self.fill.hex, outline=self.stroke.hex,
         )
         self.queued_actions.append(action)
-    
+
     def set_arc(self, x, y, width, height, start, stop, mode):
         x1 = x - (width + 1) // 2
         y1 = y - (height + 1) // 2
@@ -111,14 +110,17 @@ class Window(tk.Frame):
         mode = mode.lower()
         if mode == 'pie':
             mode += 'slice'
-        action = Action(self.canvas, 'create_arc',
+        action = Action(
+            self.canvas, 'create_arc',
             x1, y1, x2, y2,
-            start=start, extent=angle, style=mode, fill=self.fill.hex, outline=self.stroke.hex
+            start=start, extent=angle, style=mode,
+            fill=self.fill.hex, outline=self.stroke.hex,
         )
         self.queued_actions.append(action)
 
     def set_point(self, x, y):
-        action = Action(self.canvas, 'create_line',
-            x, y, x + 1, y + 1, fill=self.stroke.hex
+        action = Action(
+            self.canvas, 'create_line',
+            x, y, x + 1, y + 1, fill=self.stroke.hex,
         )
         self.queued_actions.append(action)

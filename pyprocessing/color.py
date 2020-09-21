@@ -1,6 +1,6 @@
 import colorsys
 
-from pyprocessing import pp
+from pyprocessing import PyProcessing
 
 
 class Color:
@@ -124,19 +124,19 @@ def lerp_color(color_from, color_to, amount):
 # Setting colors
 
 def stroke(color=0):
-    global pp
+    pp = PyProcessing()
     color = Color(color)
     pp.namespace['stroke'] = color
 
 
 def fill(color=255):
-    global pp
+    pp = PyProcessing()
     color = Color(color)
     pp.namespace['fill'] = color
 
 
 def background(color):
-    global pp
+    pp = PyProcessing()
     color = Color(color)
 
     pp.windows.set_background(color)

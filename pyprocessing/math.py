@@ -11,7 +11,7 @@ class PVectorMeta(type):
     def __getattr__(self, attr):
         if attr == 'add':
             return self._class_add
-        if attr ==  'dist':
+        if attr == 'dist':
             return self._class_dist
         if attr == 'sub':
             return self._class_sub
@@ -46,7 +46,7 @@ class PVector(metaclass=PVectorMeta):
     def __getattr__(self, attr):
         if attr == 'add':
             return self._instance_add
-        if attr ==  'dist':
+        if attr == 'dist':
             return self._instance_dist
         if attr == 'sub':
             return self._instance_sub

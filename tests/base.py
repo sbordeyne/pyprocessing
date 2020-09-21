@@ -1,5 +1,4 @@
 import unittest
-from pyprocessing import Runner
 
 
 class ProcessingSketch:
