@@ -9,22 +9,37 @@ class Color:
     HSB = 3
     
     colorspace = RGB
+    maxv1 = maxv2 = maxv3 = maxva = 255
 
     def __init__(self, *args, colorspace=0):
+        
         self.colorspace = colorspace
+        def adjust(val, max):
+            if val > max:
+                return max
+            return round((val / max) * 255)
+
+        def adjusttuple(tup, maxes):
+            return (adjust(i, j) for i, j in zip(tup, maxes))
 
         if len(args) == 1:
             # 1 argument : no matter the colorspace, it's grayscale
-            self.red = self.green = self.blue = args[0]
+            self.red = adjust(args[0], self.maxv1)
+            self.green = adjust(args[0], self.maxv2)
+            self.blue = adjust(args[0], self.maxv3)
             self.alpha = 255
         elif len(args) == 2:
-            self.red = self.green = self.blue = args[0]
-            self.alpha = args[1]
+            self.red = adjust(args[0], self.maxv1)
+            self.green = adjust(args[0], self.maxv2)
+            self.blue = adjust(args[0], self.maxv3)
+            self.alpha = adjust(args[1], self.maxva)
         elif len(args) == 3:
             self.alpha = 255
-            self.red, self.green, self.blue = self._values_to_rgb(*args)
+            self.red, self.green, self.blue = self._values_to_rgb(*adjusttuple(  # Adjust vals then unpack and convert
+                args, (self.maxv1, self.maxv2, self.maxv3)                       # Terribly done by Peanutbutter_Warrior
+            ))
         elif len(args) == 4:
-            v1, v2, v3, self.alpha = args
+            v1, v2, v3, self.alpha = adjusttuple(args, (self.maxv1, self.maxv2, self.maxv3, self.maxva))
             self.red, self.green, self.blue = self._values_to_rgb(v1, v2, v3)
     
     @staticmethod
@@ -168,5 +183,14 @@ def background(color):
 def color_mode(mode, *args):
     if mode != 1 and mode != 3:
         raise ValueError('Invalid color mode. Valid modes are 1 (RGB) and 3 (HSB)')
+
     if len(args) == 0:
         Color.colorspace = mode
+    elif len(args) == 1:
+        Color.maxv1 = Color.maxv2 = Color.maxv3 = Color.maxva = args[0]
+    elif len(args) == 3:
+        Color.maxv1, Color.maxv2, Color.maxv3 = args
+    elif len(args) == 4:
+        Color.maxv1, Color.maxv2, Color.maxv3, Color.maxva = args
+    else:
+        raise ValueError(f'Invalid amount of maximums. Accepts 1, 3, or 4. (found {len(args)})')
