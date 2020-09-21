@@ -46,6 +46,7 @@ from math import (
 )
 from pyprocessing.constants import (
     HALF_PI, PI, QUARTER_PI, TAU, TWO_PI,
+    RGB, HSB,
 )
 from pyprocessing.calculation import (
     ceil, dist, exp, floor, log, pow, sqrt,
