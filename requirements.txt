@@ -2,3 +2,4 @@ Pillow
 lxml
 noise
 stringcase
+svgwrite

@@ -4,7 +4,33 @@ import random
 from pyprocessing.calculation import lerp
 
 
-class PVector:
+__all__ = ('PVector', )
+
+
+class PVectorMeta(type):
+    def __getattr__(self, attr):
+        if attr == 'add':
+            return self._class_add
+        if attr ==  'dist':
+            return self._class_dist
+        if attr == 'sub':
+            return self._class_sub
+        return super().__getattr__(attr)
+
+    @staticmethod
+    def _class_add(vec1, vec2):
+        return vec1 + vec2
+
+    @staticmethod
+    def _class_sub(vec1, vec2):
+        return vec1 - vec2
+
+    @staticmethod
+    def _class_dist(vec1, vec2):
+        return vec1.dist(vec2)
+
+
+class PVector(metaclass=PVectorMeta):
     @classmethod
     def random_2d(cls):
         vector = PVector(random.random(), random.random())
@@ -17,13 +43,17 @@ class PVector:
         vector.normalize()
         return vector
 
-    @classmethod
-    def add(cls, *vector, x=0, y=0, z=0):
+    def __getattr__(self, attr):
+        if attr == 'add':
+            return self._instance_add
+        if attr ==  'dist':
+            return self._instance_dist
+        if attr == 'sub':
+            return self._instance_sub
+        return super().__getattr__(attr)
+
+    def _instance_add(self, *vector, x=0, y=0, z=0):
         if vector:
-            if all(isinstance(v, PVector) for v in vector):
-                vec = PVector(*vector[0])
-                vec.add(vector[1])
-                return vec
             if isinstance(vector[0], PVector):
                 x, y, z = vector[0].position
             elif isinstance(vector[0], (list, tuple)):
@@ -36,19 +66,15 @@ class PVector:
                 x, y, z = vector
             elif isinstance(vector[0], complex):
                 x, y, z = vector[0].real, vector[0].imag, None
-        cls.x += x
-        cls.y += y
+        vec = self.copy()
+        vec.x += x
+        vec.y += y
         if z is not None:
-            cls.z += z
-        return cls
+            vec.z += z
+        return vec
 
-    @classmethod
-    def sub(cls, *vector, x=0, y=0, z=0):
+    def _instance_sub(self, *vector, x=0, y=0, z=0):
         if vector:
-            if all(isinstance(v, PVector) for v in vector):
-                vec = PVector(*vector[0])
-                vec.sub(vector[1])
-                return vec
             if isinstance(vector[0], PVector):
                 x, y, z = vector[0].position
             elif isinstance(vector[0], (list, tuple)):
@@ -61,31 +87,31 @@ class PVector:
                 x, y, z = vector
             elif isinstance(vector[0], complex):
                 x, y, z = vector[0].real, vector[0].imag, None
-        cls.x -= x
-        cls.y -= y
+        vec = self.copy()
+        vec.x -= x
+        vec.y -= y
         if z is not None:
-            cls.z -= z
-        return cls
+            vec.z -= z
+        return vec
 
-    @classmethod
-    def mult(cls, scalar=1):
-        cls.x *= scalar
-        cls.y *= scalar
-        if cls.z is not None:
-            cls.z *= scalar
-        return cls
+    def _instance_dist(self, v2):
+        return math.dist(self.position, v2.position)
 
-    @classmethod
-    def div(cls, scalar=1):
-        cls.x /= scalar
-        cls.y /= scalar
-        if cls.z is not None:
-            cls.z /= scalar
-        return cls
+    def mult(self, scalar=1):
+        vec = self.copy()
+        vec.x *= scalar
+        vec.y *= scalar
+        if vec.z is not None:
+            vec.z *= scalar
+        return vec
 
-    @classmethod
-    def dist(cls, v2):
-        return math.dist(cls.position, v2.position)
+    def div(self, scalar=1):
+        vec = self.copy()
+        vec.x /= scalar
+        vec.y /= scalar
+        if vec.z is not None:
+            vec.z /= scalar
+        return vec
 
     @classmethod
     def set_mag(cls, mag, target=None):
@@ -163,6 +189,17 @@ class PVector:
 
     def __repr__(self):
         return f'PVector<{", ".join(str(self).split())}> at {id(self)}'
+
+    def __eq__(self, other):
+        if isinstance(other, PVector):
+            return all(
+                m1 == m2 for m1, m2 in zip(self.position, other.position)
+            )
+        if isinstance(other, (list, tuple)):
+            return all(m1 == m2 for m1, m2 in zip(self.position, other))
+        raise ValueError(
+            f"Invalid operand '==' for type Pvector and {type(other)}"
+        )
 
     @property
     def z(self):
