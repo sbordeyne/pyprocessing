@@ -1,16 +1,16 @@
+sudo: false
 language: python
-required: sudo
 python:
   - "3.7"
   - "3.8"
 before_install:
-  - sudo pip install -r requirements.txt
-  - sleep 3
+  - pip3 install -r requirements.txt --user
 install:
-  - python -m pip install nose coverage codecov
+  - python3 -m pip install --user nose coverage codecov flake8 pylint
 script:
-  - python -m pip install .
-  - python -m nose
+  - python3 -m pip install --user .
+  - python3 -m nose
+  - flake8 --config .flake8
 after_success:
   - coverage run nosetests
   - codecov

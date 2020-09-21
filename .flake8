@@ -1,0 +1,4 @@
+[flake8]
+extend_ignore = F541,F406
+extend_exclude = .travis.yml,.gitattributes,*.md,*.cfg,*.txt
+max_line_length = 99
