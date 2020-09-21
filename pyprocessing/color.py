@@ -141,14 +141,23 @@ def stroke(color=0):
     pp.namespace['stroke'] = color
 
 
+def no_stroke():
+    pp = PyProcessing()
+    pp.namespace['stroke'] = None
+
+
 def fill(color=255):
     pp = PyProcessing()
     color = Color(color)
     pp.namespace['fill'] = color
 
 
+def no_fill():
+    pp = PyProcessing()
+    pp.namespace['fill'] = None
+
+
 def background(color):
     pp = PyProcessing()
     color = Color(color)
-
     pp.windows.set_background(color)
