@@ -15,6 +15,16 @@ class PVectorMeta(type):
             return self._class_dist
         if attr == 'sub':
             return self._class_sub
+        if attr == 'zero':
+            return self._class_zero()
+        if attr == 'one':
+            return self._class_one()
+        if attr == 'x_unit':
+            return self._class_x()
+        if attr == 'y_unit':
+            return self._class_y()
+        if attr == 'z_unit':
+            return self._class_z()
         return super().__getattr__(attr)
 
     @staticmethod
@@ -28,6 +38,26 @@ class PVectorMeta(type):
     @staticmethod
     def _class_dist(vec1, vec2):
         return vec1.dist(vec2)
+
+    @staticmethod
+    def _class_zero():
+        return PVector(0, 0, 0)
+
+    @staticmethod
+    def _class_one():
+        return PVector(1, 1, 1)
+
+    @staticmethod
+    def _class_x():
+        return PVector(1, 0, 0)
+
+    @staticmethod
+    def _class_y():
+        return PVector(0, 1, 0)
+
+    @staticmethod
+    def _class_z():
+        return PVector(0, 0, 1)
 
 
 class PVector(metaclass=PVectorMeta):
@@ -168,11 +198,25 @@ class PVector(metaclass=PVectorMeta):
             f"Invalid operand '*' for type PVector and {type(other)}"
         )
 
+    def __truediv__(self, other):
+        if isinstance(other, (float, int)):
+            return self.div(other)
+        raise TypeError(
+            f"Invalid operand '/' for type PVector and {type(other)}"
+        )
+
     def __div__(self, other):
         if isinstance(other, (float, int)):
             return self.div(other)
         raise TypeError(
             f"Invalid operand '/' for type PVector and {type(other)}"
+        )
+
+    def __floordiv__(self, other):
+        if isinstance(other, (float, int)):
+            return self.div(other)
+        raise TypeError(
+            f"Invalid operand '//' for type PVector and {type(other)}"
         )
 
     def __matmul__(self, other):
@@ -200,6 +244,13 @@ class PVector(metaclass=PVectorMeta):
         raise ValueError(
             f"Invalid operand '==' for type Pvector and {type(other)}"
         )
+
+    def __getitem__(self, item):
+        if isinstance(item, str):
+            return {'x': self.x, 'y': self.y, 'z': self.z}[item]
+        if isinstance(item, int):
+            return [self.x, self.y, self.z][item]
+        raise KeyError(f"Item '{item}' cannot be accessed.")
 
     @property
     def z(self):

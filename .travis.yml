@@ -10,6 +10,7 @@ script:
   - python3 -m pip install .
   - python3 -m nose
   - flake8 --config .flake8
+  - python -m unittest discover tests
 after_success:
   - coverage run nosetests
   - codecov
