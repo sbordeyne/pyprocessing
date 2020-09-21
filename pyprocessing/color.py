@@ -185,7 +185,7 @@ def color_mode(mode, *args):
         raise ValueError('Invalid color mode. Valid modes are 1 (RGB) and 3 (HSB)')
 
     Color.colorspace = mode
-    
+
     if len(args) == 0:
         pass
     elif len(args) == 1:
