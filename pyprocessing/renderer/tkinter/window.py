@@ -7,7 +7,6 @@ from pyprocessing.renderer.actions import Action
 
 class Window(tk.Frame):
     def __init__(self, master, pyprocessing):
-
         super().__init__(master)
         namespace = pyprocessing.namespace
         self.pyprocessing = pyprocessing
