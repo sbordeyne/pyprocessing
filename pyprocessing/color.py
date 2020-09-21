@@ -7,10 +7,10 @@ class Color:
     RGB = 1
     HLS = 2
     HSB = 3
-    colormode = RGB
 
-    def __init__(self, *args, colorspace=0):
-        self.colorspace = colorspace
+    colorspace = RGB
+
+    def __init__(self, *args):
 
         if len(args) == 1:
             # 1 argument : no matter the colorspace, it's grayscale
@@ -150,3 +150,10 @@ def background(color):
     pp = PyProcessing()
     color = Color(color)
     pp.windows.set_background(color)
+
+
+def color_mode(mode, *args):
+    if mode != 1 and mode != 3:
+        raise ValueError('Invalid color mode. Valid modes are 1 (RGB) and 3 (HSB)')
+    if len(args) == 0:
+        Color.colorspace = mode
