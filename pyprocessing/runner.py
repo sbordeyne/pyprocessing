@@ -49,5 +49,5 @@ class Runner:
             def draw():
                 return
 
-        self.pp.draw = draw
+        self.pp.draw_fn = draw
         self.pp.start()

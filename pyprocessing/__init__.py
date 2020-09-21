@@ -1,19 +1,21 @@
 # flake8: noqa
 
-from pyprocessing.pyprocessing import PyProcessing
-from pyprocessing.runner import Runner
-from pyprocessing.converter import Converter
-
-
 __version__ = '0.0.1b4'
 __author__ = ('Dogeek', )
 
 width = 640
 height = 480
+frame_count = 0
+
+from pyprocessing.pyprocessing import PyProcessing
+from pyprocessing.runner import Runner
+from pyprocessing.converter import Converter
+
+
 pp = PyProcessing()
 
 from pyprocessing.environment import (
-    size, frame_rate,
+    size, frame_rate, delay,
 )
 from pyprocessing.primitives_2d import (
     line,

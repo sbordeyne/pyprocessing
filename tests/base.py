@@ -22,5 +22,3 @@ class TestCase(unittest.TestCase):
         Use the Tk renderer to test things out by default, since it's
         only using the standard library
         '''
-
-        self.runner = Runner()

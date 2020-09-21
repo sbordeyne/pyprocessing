@@ -6,6 +6,7 @@ import sys
 from time import time_ns
 
 from pyprocessing.utils import SingletonMeta
+from pyprocessing import frame_count
 
 
 class RenderersDelegate:
@@ -44,7 +45,13 @@ class PyProcessing(metaclass=SingletonMeta):
         self.namespace = {}
         self.renderers = []
 
-        formatter = logging.Formatter('%(asctime)s - %(levelinfo)s : %(message)s')
+        formatter = logging.Formatter(
+            fmt=(
+                '%(asctime)s-%(levelname)s:'
+                '%(lineno)s | %(message)s'
+            ),
+            datefmt='%Y-%m-%dT%H:%M:%S,%f',
+        )
         fhandler = logging.FileHandler(self._get_logs_path())
         fhandler.setFormatter(formatter)
         shandler = logging.StreamHandler(sys.stdout)
@@ -65,11 +72,11 @@ class PyProcessing(metaclass=SingletonMeta):
                 ).expanduser()
         if system == 'Darwin':
             path = pathlib.Path(
-                    f'~/PyProcessing/logs/{filename}.log'
+                    f'~/.pyprocessing/logs/{filename}.log'
                 ).expanduser()
         if system == 'Linux':
             path = pathlib.Path(
-                    f'~/pyprocessing/{filename}.log'
+                    f'~/.pyprocessing/{filename}.log'
                 ).expanduser()
 
         if path:
@@ -89,3 +96,9 @@ class PyProcessing(metaclass=SingletonMeta):
     @property
     def windows(self):
         return RenderersDelegate(self, self.renderers, 'window')
+
+    def draw(self):
+        global frame_count
+        if hasattr(self, 'draw_fn'):
+            self.draw_fn()
+        frame_count += 1
