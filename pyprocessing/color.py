@@ -15,7 +15,7 @@ class Color:
         def adjust(val, maximum):
             if val > maximum:
                 return 255
-            return round((val / maximum) * 255)
+            return int((val / maximum) * 255)
 
         def adjusttuple(tup, maxes):
             return (adjust(i, j) for i, j in zip(tup, maxes))
