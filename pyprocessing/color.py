@@ -181,8 +181,8 @@ def background(color):
 
 
 def color_mode(mode, *args):
-    if mode != 1 and mode != 3:
-        raise ValueError('Invalid color mode. Valid modes are 1 (RGB) and 3 (HSB)')
+    if mode != Color.RGB and mode != Color.HSB:
+        raise ValueError('Invalid color mode. Valid modes are RGB and HSB')
     
     Color.colorspace = mode
     if len(args) == 0:
