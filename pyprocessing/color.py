@@ -35,9 +35,12 @@ class Color:
             self.alpha = adjust(args[1], self.maxva)
         elif len(args) == 3:
             self.alpha = 255
-            self.red, self.green, self.blue = self._values_to_rgb(*adjusttuple(  # Adjust vals then unpack and convert
-                args, (self.maxv1, self.maxv2, self.maxv3)                       # Terribly done by Peanutbutter_Warrior
-            ))
+            # Adjust values then unpack and convert
+            self.red, self.green, self.blue = self._values_to_rgb(
+                *adjusttuple(
+                    args, (self.maxv1, self.maxv2, self.maxv3)
+                )
+            )
         elif len(args) == 4:
             v1, v2, v3, self.alpha = adjusttuple(args, (self.maxv1, self.maxv2, self.maxv3, self.maxva))
             self.red, self.green, self.blue = self._values_to_rgb(v1, v2, v3)
