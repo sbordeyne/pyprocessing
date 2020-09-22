@@ -52,6 +52,3 @@ from pyprocessing.calculation import (
     ceil, dist, exp, floor, log, pow, sqrt,
     sq, constrain, lerp, mag, map, norm
 )
-from pyprocessing.structure import (
-    thread, timeout,
-)

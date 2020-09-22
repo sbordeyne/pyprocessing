@@ -1,11 +1,3 @@
-[![Build Status](https://travis-ci.com/Dogeek/pyprocessing.svg?branch=master)](https://travis-ci.com/Dogeek/pyprocessing)
-[![Documentation Status](https://readthedocs.org/projects/pyprocessing/badge/?version=latest)](https://pyprocessing.readthedocs.io/en/latest/?badge=latest)
-[![PyPI license](https://img.shields.io/pypi/l/pyprocessing2.svg)](https://pypi.python.org/pypi/pyprocessing2/)
-[![PyPI version](https://badge.fury.io/py/pyprocessing2.svg)](https://badge.fury.io/py/pyprocessing2)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/pyprocessing2.svg)](https://pypi.python.org/pypi/pyprocessing2/)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Dogeek/pyprocessing/graphs/commit-activity)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/459686cbb6914b5bb93d0400afcadbc5)](https://www.codacy.com/manual/Dogeek/pyprocessing/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Dogeek/pyprocessing&amp;utm_campaign=Badge_Grade)
-
 # PyProcessing
 
 Write and execute Processing code in pure python

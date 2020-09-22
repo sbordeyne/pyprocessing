@@ -8,21 +8,18 @@ class Color:
     HLS = 2
     HSB = 3
 
-    @staticmethod
-    def from_hex(color):
-        # strip the leading '#' sign
-        color = color[1:]
+    colorspace = RGB
+    maxv1 = maxv2 = maxv3 = maxva = 255
 
-        # select the hex r, g, b component, cast into an int
-        # It's hex, so specify the base for the int function
-        red = int(color[0:2], base=16)
-        green = int(color[2:4], base=16)
-        blue = int(color[4:6], base=16)
-        return Color(red, green, blue, colorspace=Color.RGB)
+    def __init__(self, *args):
+        def adjust(val, max):
+            if val > max:
+                return 255
+            return round((val / max) * 255)
 
-    def __init__(self, *args, colorspace=0):
-        self.colorspace = colorspace
-        
+        def adjusttuple(tup, maxes):
+            return (adjust(i, j) for i, j in zip(tup, maxes))
+
         if len(args) == 1:
             # 1 argument : no matter the colorspace, it's grayscale
             self.red = adjust(args[0], self.maxv1)

@@ -2,60 +2,11 @@ import datetime
 import logging
 import pathlib
 import platform
-import re
 import sys
 from time import time_ns
 
 from pyprocessing.utils import SingletonMeta
 from pyprocessing import frame_count  # noqa
-
-
-hexcolor_re = re.compile(r'#\d{6}')
-
-
-class PPNamespace(dict):
-    attrdefault = {
-        'framerate': 60,
-        'stroke': '#000000',
-        'fill': '#ffffff',
-        'width': 640,
-        'height': 480,
-    }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self._changed_attrs = set()
-        for k in self.attrdefault:
-            setattr(self, '_' + k, None)
-
-    def __getattr__(self, attr):
-        if attr in self.attrdefault:
-            return self.getattribute(attr)
-        return super().__getattr__(attr)
-
-    def __setitem__(self, item, value):
-        if item in self.attrdefault:
-            self._changed_attrs.add(item)
-        return super().__setitem__(item, value)
-
-    def getattribute(self, attr):
-        def tocolor(value):
-            if isinstance(value, str) and hexcolor_re.match(value):
-                from pyprocessing.color import Color
-                return Color.from_hex(value)
-            return value
-
-        if attr in self._changed_attrs:
-            setattr(
-                self, '_' + attr, tocolor(
-                    self.get(
-                        attr, self.attrdefault[attr],
-                    )
-                )
-            )
-            self._changed_attrs.discard(attr)
-        return getattr(self, '_' + attr)
 
 
 class RenderersDelegate:
@@ -86,28 +37,13 @@ class RenderersDelegate:
             getattr(getattr(r, self.render_attr), mname)(*args, **kwargs)
 
 
-class PyProcessingCallables(dict):
-    def __getattr__(self, attrname):
-        if attrname in self.values():
-            return self[attrname]
-        super().__getattr__(attrname)
-
-    def __getitem__(self, item):
-        if item not in self:
-            raise KeyError(
-                f'Item {item} is not a callable. Is it defined properly?'
-            )
-        return super().__getitem__(item)
-
-
 class PyProcessing(metaclass=SingletonMeta):
     def __init__(self):
         self.width = 640
         self.height = 480
         self.start_time_ns = 0
-        self.namespace = PPNamespace()
+        self.namespace = {}
         self.renderers = []
-        self.callables = PyProcessingCallables()
 
         formatter = logging.Formatter(
             fmt=(
