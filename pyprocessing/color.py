@@ -42,7 +42,9 @@ class Color:
                 )
             )
         elif len(args) == 4:
-            v1, v2, v3, self.alpha = adjusttuple(args, (self.maxv1, self.maxv2, self.maxv3, self.maxva))
+            v1, v2, v3, self.alpha = adjusttuple(
+                args, (self.maxv1, self.maxv2, self.maxv3, self.maxva)
+            )
             self.red, self.green, self.blue = self._values_to_rgb(v1, v2, v3)
     
     @staticmethod
