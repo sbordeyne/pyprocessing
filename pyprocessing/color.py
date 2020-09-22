@@ -8,6 +8,18 @@ class Color:
     HSV = 1
     HLS = 2
 
+    @staticmethod
+    def from_hex(color):
+        # strip the leading '#' sign
+        color = color[1:]
+
+        # select the hex r, g, b component, cast into an int
+        # It's hex, so specify the base for the int function
+        red = int(color[0:2], base=16)
+        green = int(color[2:4], base=16)
+        blue = int(color[4:6], base=16)
+        return Color(red, green, blue, colorspace=Color.RGB)
+
     def __init__(self, *args, colorspace=0):
         self.colorspace = colorspace
 

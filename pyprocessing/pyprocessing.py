@@ -2,19 +2,22 @@ import datetime
 import logging
 import pathlib
 import platform
+import re
 import sys
 from time import time_ns
 
 from pyprocessing.utils import SingletonMeta
 from pyprocessing import frame_count  # noqa
-from pyprocessing.color import Color
+
+
+hexcolor_re = re.compile(r'#\d{6}')
 
 
 class PPNamespace(dict):
     attrdefault = {
         'framerate': 60,
-        'stroke': Color(0),
-        'fill': Color(255),
+        'stroke': '#000000',
+        'fill': '#ffffff',
         'width': 640,
         'height': 480,
     }
@@ -37,9 +40,18 @@ class PPNamespace(dict):
         return super().__setitem__(item, value)
 
     def getattribute(self, attr):
+        def tocolor(value):
+            if isinstance(value, str) and hexcolor_re.match(value):
+                from pyprocessing.color import Color
+                return Color.from_hex(value)
+            return value
+
         if attr in self._changed_attrs:
-            setattr(self, '_' + attr, self.get(
-                attr, self.attrdefault[attr],
+            setattr(
+                self, '_' + attr, tocolor(
+                    self.get(
+                        attr, self.attrdefault[attr],
+                    )
                 )
             )
             self._changed_attrs.discard(attr)
