@@ -49,12 +49,5 @@ class Runner:
             def draw():
                 return
 
-        callables = {
-            func_name: getattr(self.sketch, func_name)
-            for func_name in dir(self.sketch)
-            if callable(getattr(self.sketch, func_name))
-        }
-
         self.pp.draw_fn = draw
-        self.pp.callables.update(callables)
         self.pp.start()

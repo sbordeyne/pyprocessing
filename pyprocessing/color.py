@@ -12,8 +12,8 @@ class Color:
     maxv1 = maxv2 = maxv3 = maxva = 255
 
     def __init__(self, *args, colorspace=0):
-        
         self.colorspace = colorspace
+
         def adjust(val, max):
             if val > max:
                 return 255
