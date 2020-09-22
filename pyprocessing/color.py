@@ -177,12 +177,14 @@ def color_mode(mode, *args):
     
     Color.colorspace = mode
     if len(args) == 0:
-        pass
-    elif len(args) == 1:
+        return
+    if len(args) == 1:
         Color.maxv1 = Color.maxv2 = Color.maxv3 = Color.maxva = args[0]
-    elif len(args) == 3:
+        return
+    if len(args) == 3:
         Color.maxv1, Color.maxv2, Color.maxv3 = args
-    elif len(args) == 4:
+        return
+    if len(args) == 4:
         Color.maxv1, Color.maxv2, Color.maxv3, Color.maxva = args
-    else:
-        raise ValueError(f'Invalid amount of maximums. Accepts 1, 3, or 4. (found {len(args)})')
+        return
+    raise ValueError(f'Invalid amount of maximums. Accepts 1, 3, or 4. (found {len(args)})')
