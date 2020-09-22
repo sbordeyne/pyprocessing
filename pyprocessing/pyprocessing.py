@@ -7,6 +7,43 @@ from time import time_ns
 
 from pyprocessing.utils import SingletonMeta
 from pyprocessing import frame_count  # noqa
+from pyprocessing.color import Color
+
+
+class PPNamespace(dict):
+    attrdefault = {
+        'framerate': 60,
+        'stroke': Color(0),
+        'fill': Color(255),
+        'width': 640,
+        'height': 480,
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self._changed_attrs = set()
+        for k in self.attrdefault:
+            setattr(self, '_' + k, None)
+
+    def __getattr__(self, attr):
+        if attr in self.attrdefault:
+            return self.getattribute(attr)
+        return super().__getattr__(attr)
+
+    def __setitem__(self, item, value):
+        if item in self.attrdefault:
+            self._changed_attrs.add(item)
+        return super().__setitem__(item, value)
+
+    def getattribute(self, attr):
+        if attr in self._changed_attrs:
+            setattr(self, '_' + attr, self.get(
+                attr, self.attrdefault[attr],
+                )
+            )
+            self._changed_attrs.discard(attr)
+        return getattr(self, '_' + attr)
 
 
 class RenderersDelegate:
@@ -56,7 +93,7 @@ class PyProcessing(metaclass=SingletonMeta):
         self.width = 640
         self.height = 480
         self.start_time_ns = 0
-        self.namespace = {}
+        self.namespace = PPNamespace()
         self.renderers = []
         self.callables = PyProcessingCallables()
 
