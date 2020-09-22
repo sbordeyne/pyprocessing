@@ -51,6 +51,17 @@ class Color:
 
         self.colorspace = current_colorspace
 
+    @staticmethod
+    def from_hex(color):
+        # strip the leading '#' sign
+        color = color[1:]
+
+        # select the hex r, g, b component, cast into an int
+        # It's hex, so specify the base for the int function
+        red = int(color[0:2], base=16)
+        green = int(color[2:4], base=16)
+        blue = int(color[4:6], base=16)
+        return Color(red, green, blue, colorspace=Color.RGB)
 
     def _values_to_rgb(self, v1, v2, v3):
         def f(v):
