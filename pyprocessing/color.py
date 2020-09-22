@@ -12,10 +12,10 @@ class Color:
     maxv1 = maxv2 = maxv3 = maxva = 255
 
     def __init__(self, *args):
-        def adjust(val, max):
-            if val > max:
+        def adjust(val, maximum):
+            if val > maximum:
                 return 255
-            return round((val / max) * 255)
+            return round((val / maximum) * 255)
 
         def adjusttuple(tup, maxes):
             return (adjust(i, j) for i, j in zip(tup, maxes))
