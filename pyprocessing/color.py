@@ -14,10 +14,10 @@ class Color:
     def __init__(self, *args, colorspace=0):
         self.colorspace = colorspace
 
-        def adjust(val, max):
-            if val > max:
+        def adjust(val, maximum):
+            if val > maximum:
                 return 255
-            return round((val / max) * 255)
+            return round((val / maximum) * 255)
 
         def adjusttuple(tup, maxes):
             return (adjust(i, j) for i, j in zip(tup, maxes))
