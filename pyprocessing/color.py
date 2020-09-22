@@ -11,8 +11,10 @@ class Color:
     colorspace = RGB
     maxv1 = maxv2 = maxv3 = maxva = 255
 
-    def __init__(self, *args, colorspace=0):
-        self.colorspace = colorspace
+    def __init__(self, *args, colorspace=None):
+        current_colorspace = self.colorspace
+        if colorspace is not None:
+            self.colorspace = colorspace
 
         def adjust(val, maximum):
             if val > maximum:
@@ -58,6 +60,8 @@ class Color:
         green = int(color[2:4], base=16)
         blue = int(color[4:6], base=16)
         return Color(red, green, blue, colorspace=Color.RGB)
+
+        self.colorspace = current_colorspace
 
     def _values_to_rgb(self, v1, v2, v3):
         def f(v):
