@@ -1,4 +1,14 @@
 [flake8]
-extend_ignore = F541,F406
-extend_exclude = .travis.yml,.gitattributes,*.md,*.cfg,*.txt
+extend_ignore =
+    F541,
+    F406
+extend_exclude =
+    .travis.yml,
+    .gitattributes,
+    *.md,
+    *.cfg,
+    *.txt,
+    docs/
 max_line_length = 99
+doctests = True
+max_doc_length = 99
