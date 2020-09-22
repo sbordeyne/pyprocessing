@@ -37,6 +37,20 @@ class RenderersDelegate:
             getattr(getattr(r, self.render_attr), mname)(*args, **kwargs)
 
 
+class PyProcessingCallables(dict):
+    def __getattr__(self, attrname):
+        if attrname in self.values():
+            return self[attrname]
+        super().__getattr__(attrname)
+
+    def __getitem__(self, item):
+        if item not in self:
+            raise KeyError(
+                f'Item {item} is not a callable. Is it defined properly?'
+            )
+        return super().__getitem__(item)
+
+
 class PyProcessing(metaclass=SingletonMeta):
     def __init__(self):
         self.width = 640
@@ -44,6 +58,7 @@ class PyProcessing(metaclass=SingletonMeta):
         self.start_time_ns = 0
         self.namespace = {}
         self.renderers = []
+        self.callables = PyProcessingCallables()
 
         formatter = logging.Formatter(
             fmt=(
