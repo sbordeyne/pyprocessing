@@ -1,10 +1,21 @@
+from collections.abc import Iterable
 import math
 import random
-
-from pyprocessing.calculation import lerp
+import re
 
 
 __all__ = ('PVector', )
+SWIZZLE_RE = re.compile('^[xyzwrgba]+$')
+SWIZZLE_ORDER = {
+    'x': 0,
+    'y': 1,
+    'z': 2,
+    'w': 3,
+    'r': 0,
+    'g': 1,
+    'b': 2,
+    'a': 3
+}
 
 
 class PVectorMeta(type):
@@ -25,7 +36,8 @@ class PVectorMeta(type):
             return self._class_y()
         if attr == 'z_unit':
             return self._class_z()
-        return super().__getattr__(attr)
+
+        raise AttributeError(f'PVector does not contain attribute {attr}')
 
     @staticmethod
     def _class_add(vec1, vec2):
@@ -62,96 +74,103 @@ class PVectorMeta(type):
 
 class PVector(metaclass=PVectorMeta):
     @classmethod
+    def random_n(cls, n):
+        return cls(*(random.random() - 0.5 for _ in range(n))).normalized()
+
+    @classmethod
     def random_2d(cls):
-        vector = PVector(random.random(), random.random())
-        vector.normalize()
-        return vector
+        return cls.random_n(2)
 
     @classmethod
     def random_3d(cls):
-        vector = PVector(random.random(), random.random(), random.random())
-        vector.normalize()
-        return vector
+        return cls.random_n(3)
+
+    # generic swizzling methods
+    def __swizzle_get(self, components):
+        try:
+            if len(components) == 1:
+                return self[SWIZZLE_ORDER[components]]
+
+            return PVector(*(self[SWIZZLE_ORDER[letter]] for letter in components))
+
+        except IndexError:
+            raise AttributeError(components)
+
+    def __swizzle_set(self, components, values):
+        if isinstance(values, (float, int)):
+            values = (values,) * len(components)
+
+        elif isinstance(values, complex):
+            values = (values.real, values.imag)
+
+        if not len(components) == len(values):
+            raise ValueError('sequence is not of the same size as the swizzle')
+
+        new_seq = self.seq.copy()
+
+        for letter, v in zip(components, values):
+            index = SWIZZLE_ORDER[letter]
+            if index >= len(self):
+                raise AttributeError(components)
+
+            new_seq[index] = v
+
+        self.seq = new_seq
 
     def __getattr__(self, attr):
+        if SWIZZLE_RE.match(attr):
+            return self.__swizzle_get(attr)
+
         if attr == 'add':
             return self._instance_add
-        if attr == 'dist':
-            return self._instance_dist
+
         if attr == 'sub':
             return self._instance_sub
-        return super().__getattr__(attr)
+
+        if attr == 'dist':
+            return self._instance_dist
+
+        raise AttributeError(f'PVector does not contain attribute {attr}')
+
+    def __setattr__(self, attr, val):
+        if SWIZZLE_RE.match(attr):
+            return self.__swizzle_set(attr, val)
+
+        return super().__setattr__(attr, val)
 
     def _instance_add(self, *vector, x=0, y=0, z=0):
-        if vector:
-            if isinstance(vector[0], PVector):
-                x, y, z = vector[0].position
-            elif isinstance(vector[0], (list, tuple)):
-                x, y, *_ = vector[0]
-                if len(vector[0]) == 3:
-                    z = vector[0][2]
-                else:
-                    z = None
-            elif all(isinstance(p, (int, float)) for p in vector):
-                x, y, z = vector
-            elif isinstance(vector[0], complex):
-                x, y, z = vector[0].real, vector[0].imag, None
-        vec = self.copy()
-        vec.x += x
-        vec.y += y
-        if z is not None:
-            vec.z += z
-        return vec
+        if len(vector) == 0:
+            vector = (x, y, z)
+
+        elif isinstance(vector[0], (list, tuple, PVector)):
+            vector = vector[0]
+
+        return self + vector
 
     def _instance_sub(self, *vector, x=0, y=0, z=0):
-        if vector:
-            if isinstance(vector[0], PVector):
-                x, y, z = vector[0].position
-            elif isinstance(vector[0], (list, tuple)):
-                x, y, *_ = vector[0]
-                if len(vector[0]) == 3:
-                    z = vector[0][2]
-                else:
-                    z = None
-            elif all(isinstance(p, (int, float)) for p in vector):
-                x, y, z = vector
-            elif isinstance(vector[0], complex):
-                x, y, z = vector[0].real, vector[0].imag, None
-        vec = self.copy()
-        vec.x -= x
-        vec.y -= y
-        if z is not None:
-            vec.z -= z
-        return vec
+        if len(vector) == 0:
+            vector = (x, y, z)
+
+        elif isinstance(vector[0], (list, tuple, PVector)):
+            vector = vector[0]
+
+        return self - vector
 
     def _instance_dist(self, v2):
-        return math.dist(self.position, v2.position)
+        return (self - v2).mag()
 
     def mult(self, scalar=1):
-        vec = self.copy()
-        vec.x *= scalar
-        vec.y *= scalar
-        if vec.z is not None:
-            vec.z *= scalar
-        return vec
+        return self * scalar
 
     def div(self, scalar=1):
-        vec = self.copy()
-        vec.x /= scalar
-        vec.y /= scalar
-        if vec.z is not None:
-            vec.z /= scalar
-        return vec
+        return self / scalar
 
-    @classmethod
-    def set_mag(cls, mag, target=None):
-        if target is not None:
-            target.normalize()
-            target *= mag
-            return target
-        cls.normalize()
-        cls *= mag
-        return cls
+    def set_mag(self, mag, target=None):
+        if target is None:
+            target = self
+        target.normalize()
+        for i in range(len(target)):
+            target[i] *= mag
 
     @staticmethod
     def from_angle(angle, target=None):
@@ -162,191 +181,236 @@ class PVector(metaclass=PVectorMeta):
         target.set(x, y)
         return target
 
-    def __init__(self, x=0, y=0, z=None):
-        self.x, self.y, self._z = x, y, z
-        self.is_2d = z is None
+    def __init__(self, *args, x=0, y=0, z=None):
+        if isinstance(args[0], complex):
+            self.seq = [args[0].real, args[0].imag]
+            return
+
+        if args:
+            self.seq = list(args)
+            return
+
+        self.seq = [x, y, z] if z is not None else [x, y]
 
     def __copy__(self):
         return self.copy()
 
     def __add__(self, other):
-        if isinstance(other, (list, tuple)):
-            return self.add(*other)
-        elif isinstance(other, (PVector, complex)):
-            return self.add(other)
+        if isinstance(other, complex):
+            other = (other.real, other.imag)
+
+        if isinstance(other, Iterable):
+            return PVector(*(cmpnt_a + cmpnt_b for cmpnt_a, cmpnt_b in zip(self, other)))
+
         raise TypeError(
             f"Invalid operand '+' for type PVector and {type(other)}"
         )
 
     def __sub__(self, other):
-        if isinstance(other, (list, tuple)):
-            return self.sub(*other)
-        elif isinstance(other, (PVector, complex)):
-            return self.sub(other)
+        if isinstance(other, complex):
+            other = (other.real, other.imag)
+
+        if isinstance(other, Iterable):
+            return PVector(*(cmpnt_a - cmpnt_b for cmpnt_a, cmpnt_b in zip(self, other)))
+
         raise TypeError(
             f"Invalid operand '-' for type PVector and {type(other)}"
         )
 
     def __mul__(self, other):
-        if isinstance(other, PVector):
+        if isinstance(other, (float, int)):
+            return PVector(*(cmpnt_a * other for cmpnt_a in self))
+
+        if isinstance(other, Iterable):
             return self.dot(other)
-        elif isinstance(other, (list, tuple)):
-            return self.dot(PVector(*other))
-        elif isinstance(other, (float, int)):
-            return self.mult(other)
+
         raise TypeError(
             f"Invalid operand '*' for type PVector and {type(other)}"
         )
 
     def __truediv__(self, other):
         if isinstance(other, (float, int)):
-            return self.div(other)
-        raise TypeError(
-            f"Invalid operand '/' for type PVector and {type(other)}"
-        )
+            return PVector(*(cmpnt_a / other for cmpnt_a in self))
 
-    def __div__(self, other):
-        if isinstance(other, (float, int)):
-            return self.div(other)
         raise TypeError(
             f"Invalid operand '/' for type PVector and {type(other)}"
         )
 
     def __floordiv__(self, other):
         if isinstance(other, (float, int)):
-            return self.div(other)
+            return PVector(*(cmpnt_a // other for cmpnt_a in self))
+
         raise TypeError(
             f"Invalid operand '//' for type PVector and {type(other)}"
         )
 
     def __matmul__(self, other):
-        if isinstance(other, PVector):
+        if isinstance(other, Iterable):
             return self.cross(other)
-        raise TypeError(
-            f"Invalid operand '@' for type PVector and {type(other)}"
-        )
 
     def __str__(self):
-        if self.is_2d:
-            return f'{self.x} {self.y}'
-        return f'{self.x} {self.y} {self.z}'
+        return ' '.join(str(i) for i in self)
 
     def __repr__(self):
-        return f'PVector<{", ".join(str(self).split())}> at {id(self)}'
+        return f"PVector<{', '.join(str(i) for i in self)}> at {id(self)}"
+
+    def __len__(self):
+        return len(self.seq)
+
+    def __iter__(self):
+        return iter(self.seq)
 
     def __eq__(self, other):
-        if isinstance(other, PVector):
-            return all(
-                m1 == m2 for m1, m2 in zip(self.position, other.position)
-            )
-        if isinstance(other, (list, tuple)):
-            return all(m1 == m2 for m1, m2 in zip(self.position, other))
-        raise ValueError(
-            f"Invalid operand '==' for type Pvector and {type(other)}"
-        )
+        if not isinstance(other, Iterable):
+            return False
+
+        if not len(other) == len(self):
+            return False
+
+        if not all(cmpnt_a == cmpnt_b for cmpnt_a, cmpnt_b in zip(self, other)):
+            return False
+
+        return True
 
     def __getitem__(self, item):
-        if isinstance(item, str):
-            return {'x': self.x, 'y': self.y, 'z': self.z}[item]
+        if isinstance(item, str) and SWIZZLE_RE.match(item):
+            return self.__swizzle_get(item)
+
         if isinstance(item, int):
-            return [self.x, self.y, self.z][item]
+            return self.seq[item]
+
+        raise KeyError(f"Item '{item}' cannot be accessed.")
+
+    def __setitem__(self, item, v):
+        if isinstance(item, str) and SWIZZLE_RE.match(item):
+            return self.__swizzle_get(item)
+
+        if isinstance(item, int):
+            self.seq[item] = v
+            return
+
         raise KeyError(f"Item '{item}' cannot be accessed.")
 
     @property
-    def z(self):
-        if self._z is None:
-            return 0
-        return self._z
-
-    @z.setter
-    def z(self, value):
-        self._z = value
-        if value is not None:
-            self.is_2d = False
+    def position(self):
+        return tuple(self)
 
     @property
-    def position(self):
-        return self.x, self.y, self.z
+    def is_2d(self):
+        return len(self) == 2
+
+    @property
+    def is_3d(self):
+        return len(self) == 3
+
+    @property
+    def is_4d(self):
+        return len(self) == 4
 
     def set(self, *vector, x=None, y=None, z=None):
-        if vector:
-            if isinstance(vector[0], PVector):
-                self.x, self.y, self.z = vector[0].position
-            elif isinstance(vector[0], (list, tuple)):
-                self.x, self.y, *_ = vector[0]
-                if len(vector[0]) == 3:
-                    self.z = vector[0][2]
-                else:
-                    self.z = None
-            elif all(isinstance(p, (int, float)) for p in vector):
-                self.x, self.y, self.z = vector
-            elif isinstance(vector[0], complex):
-                self.x, self.y, self.z = vector[0].real, vector[0].imag, None
-        if x is not None:
-            self.x = x
-        if y is not None:
-            self.y = y
-        if z is not None:
-            self.z = z
+        self.seq = PVector(*vector, x, y, z).seq
 
     def copy(self):
-        return PVector(self.x, self.y, self._z)
+        return PVector(*self)
 
     def mag(self):
         return math.sqrt(self.mag_sq())
 
     def mag_sq(self):
-        return self.x * self.x + self.y * self.y + self.z * self.z
+        return sum(cmpnt_a * cmpnt_a for cmpnt_a in self)
 
     def dot(self, other):
-        return self.x * other.x + self.y * other.y + self.z * other.z
+        return sum(cmpnt_a * cmpnt_b for cmpnt_a, cmpnt_b in zip(self, other))
 
     def cross(self, other):
-        x = self.y * other.z - self.z * other.y
-        y = self.z * other.x - self.x * other.z
-        z = self.x * other.y - self.y * other.x
+        if not len(self) == 3:
+            raise ValueError(
+                'Cross product is only supported for 3d vectors.'
+            )
+        x = self[1] * other[2] - self[2] * other[1]
+        y = self[2] * other[0] - self[0] * other[2]
+        z = self[0] * other[1] - self[1] * other[0]
         return PVector(x, y, z)
 
     def normalize(self):
         mag = self.mag()
-        self.x /= mag
-        self.y /= mag
-        self.z /= mag
+        if mag == 0:
+            return
+        for i in range(len(self)):
+            self[i] /= mag
+
+    def normalized(self):
+        v = self.copy()
+        v.normalize()
+        return v
 
     def limit(self, limit):
-        if self.mag_sq() <= limit ** 2:
+        magsq = self.mag_sq()
+        if magsq <= limit * limit:
             return
 
-        self.normalize()
-        self *= limit
+        magsq = math.sqrt(magsq) / limit
+
+        for i in range(len(self)):
+            self[i] /= magsq
 
     def heading(self):
         if not self.is_2d:
             raise ValueError('Cannot calculate heading on a 3D Vector.')
-        return math.atan2(self.y, self.x)
+        return math.atan2(self[1], self[0])
 
     def rotate(self, theta):
         if not self.is_2d:
-            raise ValueError('Cannot rotate a 3D Vector.')
-        self.x = math.cos(theta) * self.x - math.sin(theta) * self.y
-        self.y = math.sin(theta) * self.x + math.cos(theta) * self.y
+            raise ValueError(f"Can't rotate a non 2D vector")
+
+        self[0] = math.cos(theta) * self[0] - math.sin(theta) * self[1]
+        self[1] = math.sin(theta) * self[0] + math.cos(theta) * self[1]
+
+    def rotated(self, theta):
+        v = self.copy()
+        v.rotate(theta)
+        return v
 
     def lerp(self, target, amount):
-        if not (0 <= amount <= 1):
-            raise ValueError('`amount` must be between 0 and 1.')
-        if float(amount) == 0.0:
+        if amount == 0:
             return self
-        if float(amount) == 1.0:
+        if amount == 1:
             return target
-        x = lerp(self.x, target.x, amount)
-        y = lerp(self.y, target.y, amount)
-        z = lerp(self.z, target.z, amount)
-        if self.is_2d and target.is_2d:
-            z = None
-        return PVector(x, y, z)
+        return target * amount + self * (1 - amount)
 
     def angle_between(self, other):
         return math.acos(self.dot(other) / (self.mag() * other.mag()))
 
     def array(self):
         return self.position
+
+    def gen_single_component_access(letter):
+        idx = SWIZZLE_ORDER[letter]
+
+        @property
+        def getter(self):
+            if not len(self.seq) <= idx:
+                return self.seq[idx]
+
+            raise IndexError(f'PVector does not have {idx+1} elements')
+
+        @getter.setter
+        def setter(self, val):
+            if not len(self.seq) <= idx:
+                self.seq[idx] = val
+                return
+
+            raise IndexError(f'PVector does not have {idx+1} elements')
+
+        return setter
+
+    x = gen_single_component_access('x')
+    y = gen_single_component_access('y')
+    z = gen_single_component_access('z')
+    w = gen_single_component_access('w')
+    r = gen_single_component_access('r')
+    g = gen_single_component_access('g')
+    b = gen_single_component_access('b')
+    a = gen_single_component_access('a')
+
+    del gen_single_component_access
