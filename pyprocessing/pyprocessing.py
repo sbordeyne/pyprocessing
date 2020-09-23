@@ -6,6 +6,7 @@ import re
 import sys
 from time import time_ns
 
+from pyprocessing.image import PImage
 from pyprocessing.utils import SingletonMeta
 from pyprocessing import frame_count  # noqa
 
@@ -20,6 +21,10 @@ class PPNamespace(dict):
         'fill': '#ffffff',
         'width': 640,
         'height': 480,
+        'window_offset': (2, 2),
+        'window_title': 'pyprocessing',
+        'window_resizable': False,
+        'window_icon': PImage('pyprocessing/images/icon16x16.png')
     }
 
     def __init__(self, *args, **kwargs):
@@ -27,7 +32,7 @@ class PPNamespace(dict):
 
         self._changed_attrs = set()
         for k in self.attrdefault:
-            setattr(self, '_' + k, None)
+            setattr(self, '_' + k, self.attrdefault[k])
 
     def __getattr__(self, attr):
         if attr in self.attrdefault:
