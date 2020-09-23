@@ -106,7 +106,7 @@ class PyProcessing(metaclass=SingletonMeta):
         self.height = 480
         self.start_time_ns = 0
         self.namespace = PPNamespace()
-        self.renderers = []
+        self._renderers = []
         self.callables = PyProcessingCallables()
 
         formatter = logging.Formatter(
@@ -150,16 +150,20 @@ class PyProcessing(metaclass=SingletonMeta):
     def attach_renderer(self, renderer_class):
         renderer = renderer_class(self)
         renderer.init()
-        self.renderers.append(renderer)
+        self._renderers.append(renderer)
 
     def start(self):
-        for renderer in self.renderers:
+        for renderer in self._renderers:
             renderer.start()
         self.start_time_ns = time_ns()
 
     @property
     def windows(self):
-        return RenderersDelegate(self, self.renderers, 'window')
+        return RenderersDelegate(self, self._renderers, 'window')
+
+    @property
+    def renderers(self):
+        return RenderersDelegate(self, self._renderers, 'this')
 
     def draw(self):
         global frame_count
