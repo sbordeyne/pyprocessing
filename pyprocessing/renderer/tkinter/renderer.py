@@ -15,14 +15,14 @@ class TkRenderer:
         h = self.pp.namespace.height
         x, y = self.pp.namespace.window_offset
         geometry = f"{w + 2}x{h + 20}+{x}+{y}"
-        self.pyprocessing.logger.info(
+        self.pp.logger.info(
             'Initializing window with geometry %s', geometry
         )
         self.root.geometry(geometry)
         self.root.title(self.pp.namespace.window_title)
         self.root.resizable(self.pp.namespace.window_resizable)
         self.root.iconphoto(True, self.pp.namespace.window_icon.tk_photo_image)
-        self.window = Window(self.root, self.pyprocessing)
+        self.window = Window(self.root, self.pp)
         self.window.pack(expand=True, fill=tk.BOTH)
 
     def start(self):
@@ -34,7 +34,7 @@ class TkRenderer:
         h = self.pp.namespace.height
         x, y = self.pp.namespace.window_offset
         geometry = f"{w + 2}x{h + 20}+{x}+{y}"
-        self.pyprocessing.logger.info(
+        self.pp.logger.info(
             'Updating window with geometry %s', geometry
         )
         self.root.geometry(geometry)
