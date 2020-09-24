@@ -13,3 +13,5 @@
 * [Min Shin Khant](https://github.com/minshinkhant)
 
 * [jeacom25b](https://github.com/jeacom25b)
+
+* [Jack Strand](https://github.com/InfiniteSwerve)

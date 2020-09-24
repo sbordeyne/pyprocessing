@@ -39,9 +39,9 @@ In the future, PyProcessing may even include a tool to "convert" an existing pro
 
 ## Contributors
 
-See [the AUTHORS.md file](../blob/master/AUTHORS.md)
+See [the AUTHORS.md file](../master/AUTHORS.md)
 
-See [the CONTRIBUTING.md file](../blob/master/CONTRIBUTING.md) for contributing guidelines.
+See [the CONTRIBUTING.md file](../master/CONTRIBUTING.md) for contributing guidelines.
 
 ## License
 
