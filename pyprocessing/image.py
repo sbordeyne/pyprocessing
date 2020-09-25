@@ -1,8 +1,13 @@
+from base64 import b64decode
 from enum import Enum, IntEnum
+from io import BytesIO
 import os.path
 import pathlib
 
-from PIL import Image, ImageTk, ImageQt, ImageFilter, ImageOps
+from PIL import (
+    Image, ImageFilter, ImageOps,
+    ImageQt, ImageTk,
+)
 import requests
 
 from pyprocessing.utils import url_re
@@ -98,6 +103,11 @@ def _dilate_filter(image):
 
 class PImage:
     def __init__(self, path_or_img):
+        if isinstance(path_or_img, str) and path_or_img.startswith('base64:'):
+            self.path = None
+            self._image = Image.open(
+                BytesIO(b64decode(path_or_img[:len('base64:')]))
+            )
         if isinstance(path_or_img, (str, pathlib.Path)):
             self.path = pathlib.Path(path_or_img)
             self._image = Image.open(str(self.path))
