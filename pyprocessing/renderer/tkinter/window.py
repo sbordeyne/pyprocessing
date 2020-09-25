@@ -62,6 +62,7 @@ class Window(tk.Frame):
             self.canvas, 'create_line',
             x1, y1, x2, y2,
             fill=self.pp.namespace.stroke.hex,
+            capstyle=self.pp.namespace.stroke_cap,
         )
         self.queued_actions.append(action)
 
@@ -123,9 +124,19 @@ class Window(tk.Frame):
         self.queued_actions.append(action)
 
     def set_point(self, x, y):
+        if self.pp.namespace.stroke_cap not in {'round', 'projecting'}:
+            return
+
+        if self.pp.namespace.cap == 'round':
+            draw_function = 'create_rectangle'
+        elif self.pp.namespace.cap == 'projecting':
+            draw_function = 'create_oval'
+
+        offset = self.pp.namespace.thickness // 2
         action = Action(
-            self.canvas, 'create_line',
-            x, y, x + 1, y + 1,
+            self.canvas, draw_function,
+            x - offset, y - offset, x + offset + 1, y + offset + 1,
             fill=self.pp.namespace.stroke.hex,
+            outline=None,
         )
         self.queued_actions.append(action)

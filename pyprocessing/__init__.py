@@ -21,7 +21,9 @@ from pyprocessing.primitives_2d import (
     ellipse, rect, triangle, quad, arc,
     square, circle, line, point
 )
-
+from pyprocessing.attributes import (
+    stroke_cap,
+)
 from pyprocessing.color import (
     Color, alpha, red, green, blue,
     brightness, hue, saturation, lerp_color,
