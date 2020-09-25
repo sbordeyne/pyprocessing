@@ -22,7 +22,7 @@ from pyprocessing.primitives_2d import (
     square, circle, line, point
 )
 from pyprocessing.attributes import (
-    stroke_cap, stroke_weight
+    stroke_cap, stroke_weight, stroke_join
 )
 from pyprocessing.color import (
     Color, alpha, red, green, blue,

@@ -1,5 +1,5 @@
 from collections import deque
-from math import degrees
+from math import degrees, sin, cos
 import tkinter as tk
 
 from pyprocessing.renderer.actions import Action
@@ -84,14 +84,29 @@ class Window(tk.Frame):
     def set_rectangle(self, x1, y1, width, height):
         x2 = x1 + width + 1
         y2 = y1 + height + 1
+        thickness = self.pp.namespace.stroke_thickness
         action = Action(
             self.canvas, 'create_rectangle',
-            x1, y1, x2, y2,
+            x1 + thickness, y1 + thickness, x2 - thickness, y2 - thickness,
             fill=self.pp.namespace.fill.hex,
-            outline=self.pp.namespace.stroke.hex,
-            width=self.pp.namespace.stroke_thickness,
+            outline=None,
+            width=thickness,
         )
+        # Makes the corners with the right shape
+        line_action = Action(
+            self.canvas, 'create_line',
+            x1, y1,
+            x1 + width, y1,
+            x1 + width, y1 + height,
+            x1, y1 + height,
+            x1, y1,
+            fill=self.pp.namespace.stroke.hex,
+            width=thickness,
+            joinstyle=self.pp.namespace.join,
+        )
+
         self.queued_actions.append(action)
+        self.queued_actions.append(line_action)
 
     def set_rounded_rectangle(self, x, y, width, height, c1, c2, c3, c4):
         # For when rect has 5 or 8 arguments
@@ -102,26 +117,35 @@ class Window(tk.Frame):
         action = Action(
             self.canvas, 'create_polygon',
             points, fill=self.pp.namespace.fill.hex,
-            outline=self.pp.namespace.stroke.hex,
+            outline=None,
             width=self.pp.namespace.stroke_thickness,
         )
+        # Makes the corners with the right shape
+        line_action = Action(
+            self.canvas, 'create_line',
+            *points, points[0], points[1],
+            fill=self.pp.namespace.stroke.hex,
+            joinstyle=self.pp.namespace.join,
+            width=self.pp.namespace.thickness,
+        )
         self.queued_actions.append(action)
+        self.queued_actions.append(line_action)
 
     def set_arc(self, x, y, width, height, start, stop, mode):
         x1 = x - (width + 1) // 2
         y1 = y - (height + 1) // 2
         x2 = x + width // 2 + 1
         y2 = y + height // 2 + 1
-        start = degrees(start)
-        stop = degrees(stop)
-        angle = start - stop
+        start_degree = degrees(start)
+        stop_degree = degrees(stop)
+        angle = start_degree - stop_degree
         mode = mode.lower()
         if mode == 'pie':
             mode += 'slice'
         action = Action(
             self.canvas, 'create_arc',
             x1, y1, x2, y2,
-            start=start, extent=angle, style=mode,
+            start=start_degree, extent=angle, style=mode,
             fill=self.pp.namespace.fill.hex,
             outline=self.pp.namespace.stroke.hex,
             width=self.pp.namespace.stroke_thickness,
@@ -134,7 +158,7 @@ class Window(tk.Frame):
 
         if self.pp.namespace.cap == 'round':
             draw_function = 'create_rectangle'
-        elif self.pp.namespace.cap == 'projecting':
+        else:
             draw_function = 'create_oval'
 
         offset = self.pp.namespace.stroke_thickness // 2

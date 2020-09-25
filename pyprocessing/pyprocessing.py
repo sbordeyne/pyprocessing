@@ -26,6 +26,7 @@ class PPNamespace(dict):
         'window_resizable': (False, False),
         'stroke_cap': 'round',
         'stroke_thickness': 1,
+        'stroke_join': 'miter',
         'window_icon': PImage(
             (
                 'base64:iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAc'

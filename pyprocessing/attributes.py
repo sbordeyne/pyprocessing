@@ -16,3 +16,15 @@ def stroke_cap(cap):
 def stroke_weight(weight):
     pp = PyProcessing()
     pp.namespace['stroke_thickness'] = weight
+
+
+def stroke_join(join):
+    pp = PyProcessing()
+    if join == 2:
+        pp.namespace['join'] = 'round'
+    elif join == 8:
+        pp.namespace['join'] = 'miter'
+    elif join == 32:
+        pp.namespace['join'] = 'bevel'
+    else:
+        pp.namespace['join'] = 'bevel'
