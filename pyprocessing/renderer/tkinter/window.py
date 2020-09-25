@@ -63,6 +63,7 @@ class Window(tk.Frame):
             x1, y1, x2, y2,
             fill=self.pp.namespace.stroke.hex,
             capstyle=self.pp.namespace.stroke_cap,
+            width=self.pp.namespace.stroke_thickness,
         )
         self.queued_actions.append(action)
 
@@ -76,6 +77,7 @@ class Window(tk.Frame):
             x1, y1, x2, y2,
             fill=self.pp.namespace.fill.hex,
             outline=self.pp.namespace.stroke.hex,
+            width=self.pp.namespace.stroke_thickness,
         )
         self.queued_actions.append(action)
 
@@ -87,6 +89,7 @@ class Window(tk.Frame):
             x1, y1, x2, y2,
             fill=self.pp.namespace.fill.hex,
             outline=self.pp.namespace.stroke.hex,
+            width=self.pp.namespace.stroke_thickness,
         )
         self.queued_actions.append(action)
 
@@ -100,6 +103,7 @@ class Window(tk.Frame):
             self.canvas, 'create_polygon',
             points, fill=self.pp.namespace.fill.hex,
             outline=self.pp.namespace.stroke.hex,
+            width=self.pp.namespace.stroke_thickness,
         )
         self.queued_actions.append(action)
 
@@ -120,6 +124,7 @@ class Window(tk.Frame):
             start=start, extent=angle, style=mode,
             fill=self.pp.namespace.fill.hex,
             outline=self.pp.namespace.stroke.hex,
+            width=self.pp.namespace.stroke_thickness,
         )
         self.queued_actions.append(action)
 
@@ -132,7 +137,7 @@ class Window(tk.Frame):
         elif self.pp.namespace.cap == 'projecting':
             draw_function = 'create_oval'
 
-        offset = self.pp.namespace.thickness // 2
+        offset = self.pp.namespace.stroke_thickness // 2
         action = Action(
             self.canvas, draw_function,
             x - offset, y - offset, x + offset + 1, y + offset + 1,
