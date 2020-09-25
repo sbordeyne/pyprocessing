@@ -11,3 +11,8 @@ def stroke_cap(cap):
         pp.namespace['cap'] = 'projecting'
     else:
         pp.namespace['cap'] = 'butt'
+
+
+def stroke_weight(weight):
+    pp = PyProcessing()
+    pp.namespace['stroke_thickness'] = weight

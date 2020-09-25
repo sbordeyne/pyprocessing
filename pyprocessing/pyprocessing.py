@@ -25,6 +25,7 @@ class PPNamespace(dict):
         'window_title': 'pyprocessing',
         'window_resizable': (False, False),
         'stroke_cap': 'round',
+        'stroke_thickness': 1,
         'window_icon': PImage(
             (
                 'base64:iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAc'
