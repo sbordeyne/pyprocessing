@@ -1,10 +1,13 @@
 import datetime
+from importlib import resources
 import logging
 import pathlib
+from PIL import Image
 import platform
 import re
 import sys
 from time import time_ns
+from . import images
 
 from pyprocessing.image import PImage
 from pyprocessing.utils import SingletonMeta
@@ -23,8 +26,8 @@ class PPNamespace(dict):
         'height': 480,
         'window_offset': (2, 2),
         'window_title': 'pyprocessing',
-        'window_resizable': False,
-        'window_icon': PImage('pyprocessing/images/icon16x16.png')
+        'window_resizable': (False, False),
+        'window_icon': PImage(Image.open(resources.open_binary(images, 'icon16x16.png')))
     }
 
     def __init__(self, *args, **kwargs):

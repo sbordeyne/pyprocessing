@@ -20,7 +20,7 @@ class TkRenderer:
         )
         self.root.geometry(geometry)
         self.root.title(self.pp.namespace.window_title)
-        self.root.resizable(self.pp.namespace.window_resizable, self.pp.namespace.window_resizable)
+        self.root.resizable(*self.pp.namespace.window_resizable)
         self.root.iconphoto(True, self.pp.namespace.window_icon.tk_photo_image)
         self.window = Window(self.root, self.pp)
         self.window.pack(expand=True, fill=tk.BOTH)
