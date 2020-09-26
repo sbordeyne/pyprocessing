@@ -153,7 +153,7 @@ class Window(tk.Frame):
         self.queued_actions.append(action)
 
     def set_point(self, x, y):
-        if self.pp.namespace.stroke_cap not in {'round', 'projecting'}:
+        if self.pp.namespace.stroke_cap not in ('round', 'projecting'):
             return
 
         if self.pp.namespace.cap == 'round':
