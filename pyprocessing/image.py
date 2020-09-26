@@ -106,9 +106,9 @@ class PImage:
         if isinstance(path_or_img, str) and path_or_img.startswith('base64:'):
             self.path = None
             self._image = Image.open(
-                BytesIO(b64decode(path_or_img[:len('base64:')]))
+                BytesIO(b64decode(path_or_img[len('base64:'):]))
             )
-        if isinstance(path_or_img, (str, pathlib.Path)):
+        elif isinstance(path_or_img, (str, pathlib.Path)):
             self.path = pathlib.Path(path_or_img)
             self._image = Image.open(str(self.path))
         elif isinstance(path_or_img, Image.Image):
