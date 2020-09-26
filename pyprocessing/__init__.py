@@ -1,6 +1,6 @@
 # flake8: noqa
 
-__version__ = '0.0.1b5'
+__version__ = '0.0.1b6'
 __author__ = ('Dogeek', )
 
 width = 640
