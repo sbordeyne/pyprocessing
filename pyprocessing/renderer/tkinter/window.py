@@ -1,5 +1,5 @@
 from collections import deque
-from math import degrees, sin, cos
+from math import degrees
 import tkinter as tk
 
 from pyprocessing.renderer.actions import Action
