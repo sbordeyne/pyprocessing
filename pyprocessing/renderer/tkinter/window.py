@@ -62,8 +62,8 @@ class Window(tk.Frame):
             self.canvas, 'create_line',
             x1, y1, x2, y2,
             fill=self.pp.namespace.stroke.hex,
-            capstyle=self.pp.namespace.stroke_cap,
-            width=self.pp.namespace.stroke_thickness,
+            capstyle=self.pp.namespace.stroke_cap_attribute,
+            width=self.pp.namespace.stroke_thickness_attribute,
         )
         self.queued_actions.append(action)
 
@@ -77,14 +77,14 @@ class Window(tk.Frame):
             x1, y1, x2, y2,
             fill=self.pp.namespace.fill.hex,
             outline=self.pp.namespace.stroke.hex,
-            width=self.pp.namespace.stroke_thickness,
+            width=self.pp.namespace.stroke_thickness_attribute,
         )
         self.queued_actions.append(action)
 
     def set_rectangle(self, x1, y1, width, height):
         x2 = x1 + width + 1
         y2 = y1 + height + 1
-        thickness = self.pp.namespace.stroke_thickness
+        thickness = self.pp.namespace.stroke_thickness_attribute
         action = Action(
             self.canvas, 'create_rectangle',
             x1 + thickness, y1 + thickness, x2 - thickness, y2 - thickness,
@@ -118,7 +118,7 @@ class Window(tk.Frame):
             self.canvas, 'create_polygon',
             points, fill=self.pp.namespace.fill.hex,
             outline=None,
-            width=self.pp.namespace.stroke_thickness,
+            width=self.pp.namespace.stroke_thickness_attribute,
         )
         # Makes the corners with the right shape
         line_action = Action(
@@ -148,12 +148,12 @@ class Window(tk.Frame):
             start=start_degree, extent=angle, style=mode,
             fill=self.pp.namespace.fill.hex,
             outline=self.pp.namespace.stroke.hex,
-            width=self.pp.namespace.stroke_thickness,
+            width=self.pp.namespace.stroke_thickness_attribute,
         )
         self.queued_actions.append(action)
 
     def set_point(self, x, y):
-        if self.pp.namespace.stroke_cap not in ('round', 'projecting'):
+        if self.pp.namespace.stroke_cap_attribute not in ('round', 'projecting'):
             return
 
         if self.pp.namespace.cap == 'round':
@@ -161,7 +161,7 @@ class Window(tk.Frame):
         else:
             draw_function = 'create_oval'
 
-        offset = self.pp.namespace.stroke_thickness // 2
+        offset = self.pp.namespace.stroke_thickness_attribute // 2
         action = Action(
             self.canvas, draw_function,
             x - offset, y - offset, x + offset + 1, y + offset + 1,
