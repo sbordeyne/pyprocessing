@@ -1,3 +1,4 @@
+import enum
 from time import sleep
 import tkinter
 import ctypes
@@ -56,3 +57,31 @@ def display_density(display=0):
     if ddpi <= 213:
         return 1
     return 2
+
+
+class CursorType(enum.IntEnum):
+    ARROW = 0
+    CROSS = 1
+    HAND = 2
+    MOVE = 3
+    TEXT = 4
+    WAIT = 5
+
+
+def cursor(cursor_type):
+    '''
+    Change the cursor used on the window.
+
+    :param cursor_type: A cursor type to change to
+    :type cursor_type: Union[pyprocessing.environment.CursorType, int]
+    '''
+    pp = PyProcessing()
+    pp.renderers.set_cursor(cursor_type)
+
+
+def no_cursor():
+    '''
+    Hides the cursor from view.
+    '''
+    pp = PyProcessing()
+    pp.renderers.disable_cursor()

@@ -3,6 +3,7 @@ from math import degrees
 import tkinter as tk
 
 from pyprocessing.renderer.actions import Action
+from pyprocessing.variables import PPVariables
 
 
 class Window(tk.Frame):
@@ -14,10 +15,26 @@ class Window(tk.Frame):
             self, width=self.pp.namespace.width,
             height=self.pp.namespace.height
         )
+        self.canvas.bind('<Motion>', self.on_mouse_motion)
+        self.canvas.bind('<Button>', self.on_mouse_button_press)
+        self.canvas.bind('<ButtonRelease>', self.on_mouse_button_release)
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         self.queued_actions = deque()
         self.canvas_objs = []
+
+    def on_mouse_motion(self, event):
+        var = PPVariables()
+        var.mouseX = event.x
+        var.mouseY = event.y
+
+    def on_mouse_button_press(self, event):
+        var = PPVariables()
+        var.mouse_pressed = True
+
+    def on_mouse_button_release(self, event):
+        var = PPVariables()
+        var.mouse_pressed = False
 
     def setup(self):
         self.config(

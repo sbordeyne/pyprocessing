@@ -50,3 +50,13 @@ class TkRenderer:
 
     def update_icon(self):
         self.root.iconphoto(True, self.pp.namespace.window_icon.tk_photo_image)
+
+    def set_cursor(self, cursor_type):
+        cursors = (
+            'arrow', 'crosshair', 'hand1', 'fleur',
+            'xterm', 'circle'
+        )
+        self.window.canvas.config(cursor=cursors[cursor_type])
+
+    def disable_cursor(self):
+        self.window.canvas.config(cursor='none')

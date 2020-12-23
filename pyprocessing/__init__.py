@@ -15,7 +15,8 @@ from pyprocessing.converter import Converter
 pp = PyProcessing()
 
 from pyprocessing.environment import (
-    size, frame_rate, delay,
+    size, frame_rate, delay, cursor,
+    no_cursor, CursorType,
 )
 from pyprocessing.primitives_2d import (
     ellipse, rect, triangle, quad, arc,
@@ -55,3 +56,7 @@ from pyprocessing.calculation import (
 from pyprocessing.structure import (
     thread, timeout,
 )
+
+# Various variables that need to be read from sketches
+
+from pyprocessing.variables import PPVariables
